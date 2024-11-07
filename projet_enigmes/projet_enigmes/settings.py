@@ -28,7 +28,6 @@ SECRET_KEY = env('SECRET_KEY')
 ENVIRONMENT = env('ENVIRONMENT')
 
 EMAIL_EXCEPTIONS = env.list('EMAIL_EXCEPTIONS', default=[])
-print(EMAIL_EXCEPTIONS)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
