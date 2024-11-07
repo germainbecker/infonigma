@@ -1,0 +1,32 @@
+<div id="infos-classe">
+    <p>Code de la classe : {{ classe.code }}</p>
+    {% if classe.est_active %}
+        <span class="classe-activee">Activée</span>
+    {% else %}
+        <span class="classe-desactivee">Désactivée</span>
+    {% endif %}
+    <form action="">
+        {% csrf_token %}
+        {% if classe.est_active %}
+            <button 
+                hx-post="{% url 'desactiver_classe' classe.code %}"
+                hx-target="#infos-classe"
+                hx-swap="outerHTML" 
+                class="outline btn-active-desactive"
+                hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
+            >
+                Désactiver
+            </button>
+        {% else %}
+            <button 
+                hx-post="{% url 'activer_classe' classe.code %}"
+                hx-target="#infos-classe"
+                hx-swap="outerHTML" 
+                class="outline btn-active-desactive"
+                hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
+            >
+                Activer
+            </button>
+        {% endif %}
+    </form>
+</div>

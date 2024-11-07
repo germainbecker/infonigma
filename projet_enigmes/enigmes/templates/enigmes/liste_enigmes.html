@@ -1,0 +1,35 @@
+{% extends 'enigmes/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Les énigmes</h1>
+
+    <p><strong>Chaque énigme est divisée en deux parties</strong>, chacune permettant de trouver un <strong>code</strong> :</p>
+    <ul>
+        <li>la <strong>première partie</strong> est fournie au format PDF (peut être imprimée pour diffusion)</li>
+        <li>la <strong>seconde partie</strong> est débloquée grâce au code de la première partie, et s'affiche directement sur la plateforme</li>
+    </ul>
+    <p>Pour pimenter un peu les choses, les équipes ne peuvent proposer qu'une seule réponse pour la seconde partie et la plateforme ne leur indiquera pas si cette réponse est correcte ou non. Cela permet en outre de garder les bonnes réponses secrètes et préserver l'équité dans d'éventuels concours organisés.</p>
+    
+    <p>Voici les différentes énigmes qui peuvent être proposées à vos élèves :</p>
+    
+      
+    {% for enigme in enigmes %}
+        <article class="grid">
+            <a href="{% url 'apercu_enigme' enigme.id %}">
+                Énigme {{ enigme.id }} - {{ enigme.titre }} 
+            </a>
+        </article>
+    {% endfor %}
+    
+    <!-- <h2>Créer une nouvelle classe</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ formulaire.as_p }}
+        <button type="submit" class="btn btn-primary">Créer la classe</button>
+    </form> -->
+</div>
+
+
+{% endblock %}

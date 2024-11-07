@@ -1,0 +1,16 @@
+{% extends "enigmes/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <article style="max-width:800px;display:block;margin-left:auto;margin-right:auto;">
+        <h2>Définir un nouveau mot de passe</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Changer le mot de passe</button>
+        </form>
+    </article>
+</div>
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{% extends "enigmes/base.html" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<h1>Mon compte</h1>
+
+<p>Adresse email : {{ enseignant }}</p>
+<p>
+    <a href="{% url 'reinitialisation_mot_de_passe' %}" class="chip">Réinitialiser mon mot de passe</a>
+</p>
+
+{% endblock %}

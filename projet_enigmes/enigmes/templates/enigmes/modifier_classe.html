@@ -1,0 +1,27 @@
+{% extends 'enigmes/base.html' %}
+
+{% block extra_css %}
+
+<style>
+    .centre {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Modifier la classe "{{ classe.nom }}"</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit">Valider</button>
+    </form>
+</div>
+
+{% endblock %}
+

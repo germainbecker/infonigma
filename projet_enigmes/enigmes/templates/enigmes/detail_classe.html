@@ -1,0 +1,157 @@
+{% extends 'enigmes/base.html' %}
+
+{% block extra_css %}
+
+<style>
+    .no-decoration {
+        text-decoration: none;
+    }
+
+    .centre {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    /* Surcharge pico css */
+    td {
+        background-color: inherit;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+    /* Style de base pour les lignes paires */
+    tr:nth-child(even) {
+        background-color: #f3f4f6;
+    }
+
+    .overflow-x-auto {
+        overflow-x: auto;
+    }
+
+    button.disabled {
+        cursor: not-allowed;
+    }
+
+    #infos-classe {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+    }
+
+    .classe-activee {
+        color:#3c763d;
+        background-color:#dff0d8;
+        padding: 0.2rem;
+        border-radius: 0.2rem;
+    }
+
+    .classe-desactivee {
+        color: #8a3b3b;
+        background-color: #fce3e3;
+        padding: 0.2rem;
+        border-radius: 0.2rem;
+    }
+
+    .btn-active-desactive {
+        padding: 0.2rem;
+    }
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Classe "{{ classe.nom }}"</h1>
+    <section>
+        <a class="no-decoration" href="{% url 'reponses_classe' code_classe=classe.code %}">
+            <button class="outline">Résultats</button>
+        </a>
+        <a class="no-decoration" {% if not peut_modifier %} data-tooltip="Modification impossible car des équipes sont déjà créées" data-placement="bottom"{% else %}href="{% url 'modifier_classe' code_classe=classe.code %}"{% endif%} >
+            <button class="outline {% if not peut_modifier %}disabled{% endif %}" {% if not peut_modifier %}disabled{% endif%}>Modifier</button>
+        </a>
+        <a class="no-decoration" href="{% url 'supprimer_classe' code_classe=classe.code %}">
+            <button class="outline">Supprimer</button>
+        </a>
+        
+    </section>
+    <hr>
+    <div id="infos-classe">
+        <p>Code de la classe : {{ classe.code }}</p>
+        {% if classe.est_active %}
+            <span class="classe-activee">Activée</span>
+        {% else %}
+            <span class="classe-desactivee">Désactivée</span>
+        {% endif %}
+        <form action="">
+            {% csrf_token %}
+            {% if classe.est_active %}
+                <button 
+                    hx-post="{% url 'desactiver_classe' classe.code %}"
+                    hx-target="#infos-classe"
+                    hx-swap="outerHTML" 
+                    class="outline btn-active-desactive"
+                    hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
+                >
+                    Désactiver
+                </button>
+            {% else %}
+                <button 
+                    hx-post="{% url 'activer_classe' classe.code %}"
+                    hx-target="#infos-classe"
+                    hx-swap="outerHTML" 
+                    class="outline btn-active-desactive"
+                    hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
+                >
+                    Activer
+                </button>
+            {% endif %}
+        </form>
+    </div>
+    
+    <hr>
+    <h3>Énigmes à résoudre</h3>
+    <ul>
+        {% for enigme in enigmes %}
+            <li><a href="{% url 'apercu_enigme' enigme.id %}">Énigme {{ forloop.counter }} - {{ enigme.titre }}</a></li>
+        {% endfor %}
+    </ul>
+    
+    <hr>
+    <h3>Équipes inscrites</h3>
+    {% if equipes %}
+        <p>Attention, les codes d'équipe ne doivent pas être diffusés. Ils sont visibles pour l'enseignant en cas d'oubli par une équipe.</p>
+        <div class="overflow-x-auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Équipe</th>
+                        <th>Code équipe</th>
+                        <th>Date création</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipe in equipes %}
+                    <tr>
+                        <td>{{ equipe.nom }}</td>
+                        <td>{{ equipe.code_equipe }}</td>
+                        <td>{{ equipe.date_creation|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> 
+    
+    {% else %}
+        <p>Aucune équipe n'a encore été créée pour cette classe.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+

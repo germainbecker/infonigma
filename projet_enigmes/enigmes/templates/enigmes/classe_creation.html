@@ -1,0 +1,28 @@
+{% extends 'enigmes/base.html' %}
+
+{% block extra_css %}
+
+<style>
+    .centre {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Créer une nouvelle classe</h1>
+    <p>Les énoncés des différentes énigmes sont accessibles via l'onglet "Énigmes".</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit">Créer la classe</button>
+    </form>
+</div>
+
+{% endblock %}
+

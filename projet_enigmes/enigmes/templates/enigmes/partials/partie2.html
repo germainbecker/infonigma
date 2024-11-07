@@ -1,0 +1,33 @@
+<article style="background-color:#c3e6cb">
+    <div style="text-align: center;">
+        <h2>👏 Bravo 👏</h2>
+        <i data-feather="unlock" class="centre" style="width:70px;height:70px;margin:1rem auto;"></i>
+        <p>La partie 1 est résolue ! Tentez maintenant de résoudre la seconde partie !</p>
+    </div>
+</article>
+
+<section class="consignes-code">
+    <p style="color:var(--main-color); ">
+        La suite de l'énigme est donnée ci-dessous et contient un second code à déterminer.
+        <br>Ce code sera à saisir dans le champ ci-dessous. Attention, vous n'avez qu'un seul essai !
+    </p>
+</section>
+
+<article class="centre" style="max-width: 600px;">
+    <form method="post" hx-post="{ url 'resoudre_enigme' enigme.id}">
+        {% csrf_token %}
+        <div class="form-group">
+            <h4 style="text-align: center;">Code de la seconde partie</h4>
+            <p style="text-align: center;color:var(--color-red)">{{ form2.code_partie2.help_text }}</p>
+            {{ form2.code_partie2 }}
+            {% for error in form2.code_partie2.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <button type="submit">Soumettre</button>
+    </form>
+</article>
+
+<section id="seconde-partie-enigme">
+    {{ enigme_partie2_markdown|safe }}
+</section>

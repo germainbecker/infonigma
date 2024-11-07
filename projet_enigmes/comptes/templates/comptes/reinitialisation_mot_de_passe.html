@@ -1,0 +1,17 @@
+{% extends "enigmes/base.html" %}
+
+{% block content %}
+<div class="container">
+    <article style="max-width:800px;display:block;margin-left:auto;margin-right:auto;">
+        <h2>Réinitialisation du mot de passe</h2>
+        <p>Saisissez votre adresse email. <br>Un lien pour réinitialiser votre de mot de passe vous sera envoyé.</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Envoyer le lien de réinitialisation</button>
+        </form>
+    </article>
+</div>
+
+
+{% endblock %}

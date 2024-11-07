@@ -1,0 +1,53 @@
+<article id="classe-{{ classe.id }}">
+    <a href="{% url 'detail_classe' classe.code %}">
+        {{ classe.nom }}
+    </a>
+    <div class="boutons-classe">
+        <div class="infos-classe">
+                <span>Code : {{ classe.code }}</span>
+                {% if classe.est_active %}
+                    <span class="classe-activee">Activée</span>
+                {% else %}
+                    <span class="classe-desactivee">Désactivée</span>
+                {% endif %}
+        </div>
+        <div class="icones-classe">
+            <form action="">
+                {% csrf_token %}
+                {% if classe.est_active %}
+                    <button 
+                        hx-post="{% url 'desactiver_classe_dans_mes_classes' classe.code %}"
+                        hx-target="#classe-{{ classe.id }}"
+                        hx-swap="outerHTML" 
+                        class="outline btn-active-desactive"
+                        hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
+                    >
+                        Désactiver
+                    </button>
+                {% else %}
+                    <button 
+                        hx-post="{% url 'activer_classe_dans_mes_classes' classe.code %}"
+                        hx-target="#classe-{{ classe.id }}"
+                        hx-swap="outerHTML" 
+                        class="outline btn-active-desactive"
+                        hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
+                    >
+                        Activer
+                    </button>
+                {% endif %}
+            </form>
+            <a class="no-decoration" data-tooltip="Détails" href="{% url 'detail_classe' classe.code %}">
+                <i data-feather="eye"></i>
+            </a>
+            <a class="no-decoration" data-tooltip="Résultats" href="{% url 'reponses_classe' classe.code %}">
+                <i data-feather="bar-chart-2"></i>
+            </a>
+            <a class="no-decoration {% if not peut_modifier_classe %}icon-disabled{% endif %}" {% if not peut_modifier_classe %}data-tooltip="Modification impossible car des équipes sont déjà créées"{% else %} data-tooltip="Modifier" href="{% url 'modifier_classe' classe.code %}"{% endif %}>
+                <i data-feather="edit"></i>
+            </a>
+            <a class="no-decoration" data-tooltip="Supprimer" href="{% url 'supprimer_classe' classe.code %}">
+                <i data-feather="trash"></i>
+            </a>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,85 @@
+{% extends "enigmes/base.html" %}
+
+{% block extra_css %}
+<style>
+    label.label-cgu:has([type="checkbox"]) {
+        cursor: initial;
+        font-size: 0.9rem;
+    }
+    .submit-button {
+        margin-top: 1rem;
+    }
+
+</style>
+{% endblock %}
+
+{% block title %}Inscription Enseignant{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <article style="max-width:800px;display:block;margin-left:auto;margin-right:auto;">
+        <h1>Inscription Enseignant</h1>
+        <p>Si vous êtes enseignant, vous pouvez créer un compte en remplissant le formulaire ci-dessous. Seules les adresses email académiques ou de l'AEFE sont acceptées.</p>
+        <form method="post">
+            {% csrf_token %}
+            <!-- {{ formulaire.as_div }} -->
+
+            <div>
+                {{ formulaire.email.label_tag}}
+                {{ formulaire.email }}
+                {% if formulaire.email.help_text %}
+                    <small class="helptext">{{ formulaire.email.help_text }}</small>
+                {% endif %}
+                {% if formulaire.email.errors %}
+                    <div class="text-danger">
+                        {{ formulaire.email.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ formulaire.password1.label_tag }}
+                {{ formulaire.password1 }}
+                {% if formulaire.password1.help_text %}
+                    <small class="helptext">{{ formulaire.password1.help_text }}</small>
+                {% endif %}
+                {% if formulaire.password1.errors %}
+                    <div class="text-danger">
+                        {{ formulaire.password1.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ formulaire.password2.label_tag }}
+                {{ formulaire.password2 }}
+                {% if formulaire.password2.help_text %}
+                    <small class="helptext">{{ formulaire.password2.help_text }}</small>
+                {% endif %}
+                {% if formulaire.password2.errors %}
+                    <div class="text-danger">
+                        {{ formulaire.password2.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                <label class="label-cgu">
+                    {{ formulaire.accepte_cgu }}
+                    <span>En vous inscrivant, vous acceptez les <a href="{% url 'cgu' %}" target="_blank">conditions générales d'utilisation</a></span>
+                </label>
+                
+                {% if formulaire.accepte_cgu.help_text %}
+                    <small class="helptext">{{ formulaire.accepte_cgu.help_text }}</small>
+                {% endif %}
+                {% if formulaire.accepte_cgu.errors %}
+                    <div class="text-danger">
+                        {{ formulaire.accepte_cgu.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <button class="submit-button" type="submit">S'inscrire</button>
+        </form>
+        <p><small>Vous avez déjà un compte ? <a href="{% url 'connexion_enseignant' %}">Se connecter</a></small></p>
+    </article>
+</div>
+
+{% endblock %}

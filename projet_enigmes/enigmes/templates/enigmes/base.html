@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Énigmes{% endblock %}</title>
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/beercss@3.7.10/dist/cdn/beer.min.css" rel="stylesheet" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.7.10/dist/cdn/beer.min.js"></script> -->
+
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"> -->
+    
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pumpkin.min.css"
+    >
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],
+                                displayMath: [ ['$$','$$'], ["\\[","\\]"] ]}});
+    </script>
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+    
+    <style>
+
+        :root:not([data-theme=dark]), [data-theme=light] {
+            --pico-header-background: rgba(255, 255, 255, .8);
+            --pico-header-border-color: transparent;
+        }
+
+        body>header {
+            z-index: 4;
+            position: relative;
+            padding: .5rem 0;
+            border-bottom: var(--pico-border-width) solid transparent;
+        }
+
+        body>header.is-fixed-above-lg {
+            z-index: 2;
+            position: sticky;
+            top: 0;
+            -webkit-backdrop-filter: blur(1rem);
+            backdrop-filter: blur(1rem);
+            background-color: var(--pico-header-background);
+            transition: border-top-color .4s ease-in-out,box-shadow .4s ease-in-out;
+        }
+
+        body>header.is-fixed-above-lg+main {
+            --pico-main-top-offset: var(--pico-header-height);
+        }
+
+        body > header .container {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+        }
+
+        body > header .container #logo {
+            width: 150px;
+        }
+
+        @media (min-width: 1024px) {
+            body>header.is-fixed-above-lg.is-fixed {
+                border-bottom-color: var(--pico-header-border-color);
+                box-shadow: var(--pico-card-box-shadow);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body > header .container {
+                align-items: baseline;
+            }
+            body > header .container #logo {
+                width: 120px;
+                min-width: 120px;
+            }
+        }
+        
+
+        .alert {
+            /* margin: 1rem; */
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 0.3rem;
+            border:1px solid transparent;
+        }
+
+        .alert-success{
+            color:#3c763d;
+            background-color:#dff0d8;
+            border-color:#d6e9c6
+        }
+
+        .alert-success hr{
+            border-top-color:#c9e2b3
+        }
+
+        .alert-success .alert-link{
+            color:#2b542c
+        }
+
+        .alert-info{
+            color:#31708f;
+            background-color:#d9edf7;
+            border-color:#bce8f1
+        }
+
+        .alert-info hr{
+            border-top-color:#a6e1ec
+        }
+
+        .alert-info .alert-link{
+            color:#245269
+        }
+
+        .alert-warning {
+            color: #8a3b3b;
+            background-color: #fce3e3;
+            border-color: #faebcc;
+        }
+
+        .alert-warning hr{
+            border-top-color:#f7e1b5
+        }
+
+        .alert-warning .alert-link{
+            color:#66512c
+        }
+
+        .alert-danger{
+            color:#a94442;
+            background-color:#f2dede;
+            border-color:#ebccd1
+        }
+
+        .alert-danger hr{
+            border-top-color:#e4b9c0
+        }
+
+        .alert-danger .alert-link{
+            color:#843534
+        }
+
+        .errorlist {
+            color: var(--pico-form-element-invalid-active-border-color);
+        }
+
+        .helptext li {
+            color: var(--pico-muted-color);
+        }
+
+
+
+        /* Style de base */
+header {
+    position: relative;
+}
+
+/* Cacher le menu par défaut sur les petits écrans */
+#navigation-menu {
+    display: flex; /* Affichage par défaut */
+}
+
+#burger-menu {
+    display: none; /* Masqué par défaut */
+}
+
+/* Masquer le checkbox */
+.menu-toggle {
+    display: none;
+}
+
+#burger-icon, #close-icon {
+    display: none;
+}
+
+
+
+/* Styles pour les petits écrans */
+@media (max-width: 768px) {
+
+    /* Affiche le bouton burger et cache le menu par défaut */
+    #burger-menu {
+        display: block;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+    
+    #navigation-menu {
+        display: none; /* Cacher le menu sur petits écrans */
+        flex-direction: column; /* Empile les éléments du menu verticalement */
+        position: absolute;
+        top: 100%; /* Juste en dessous du header */
+        left: 0;
+        right: 0;
+        background-color: white; /* Couleur de fond pour contraster */
+        border-top: 1px solid #ccc;
+    }
+
+    #navigation-menu ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        flex-direction: column;
+        border-bottom: 1px solid #ccc;
+    }
+
+    #navigation-menu li {
+        padding: 10px;
+        text-align: center;
+    }
+
+    /* Affiche le menu si le checkbox est coché */
+    .menu-toggle:checked ~ #navigation-menu {
+        display: flex;
+    }
+
+        /* Afficher l'icône de menu ouvert (☰) quand le menu est fermé (case décochée) */
+    .menu-toggle:not(:checked) ~ #burger-menu #burger-icon {
+        display: inline;
+    }
+
+    /* Afficher l'icône de menu fermé (✖) quand le menu est ouvert (case cochée) */
+    .menu-toggle:checked ~ #burger-menu #close-icon {
+        display: inline;
+    }
+}
+
+/* Assure que l'html et le body occupent toute la hauteur de la fenêtre */
+html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Définit le body pour utiliser Flexbox en colonne */
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    body > footer {
+        margin-top: auto;
+    }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+    {% block extra_js %}{% endblock %}
+</head>
+<body>
+    <header class="is-fixed-above-lg">
+        <div class="container">
+            <a aria-label="homepage" data-discover="true" href="/">
+                <img id="logo" src="{% static 'img/logo_noir.svg' %}" alt="logo">
+            </a>
+
+            <!-- Bouton burger pour les petits écrans -->
+            <!-- Checkbox caché pour le menu burger -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" id="burger-menu" aria-label="Toggle navigation">
+                <!-- ☰ -->
+                <span id="burger-icon">
+                    <i data-feather="menu"></i>
+                </span>
+                <span id="close-icon">
+                    <i data-feather="x"></i>
+                </span>
+            </label>
+            
+
+            <nav id="navigation-menu">
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'liste_classes' %}">Mes classes</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'liste_enigmes' %}">Énigmes</a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <a href="{% url 'a_propos' %}">À propos</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'deconnexion_enseignant' %}">Se déconnecter</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'inscription_enseignant' %}">
+                            Créer un compte
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="{% url 'connexion_enseignant' %}">
+                            <button>
+                                Se connecter
+                            </button>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        
+    </header>
+    
+
+    <main class="container">
+        {% if messages %}
+        <div class="container">
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    
+        
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <section class="grid">
+                <div>
+                    <img id="logo" src="{% static 'img/logo_noir.svg' %}" alt="logo" width="100px">
+                    <p><small>Application créée et développée par Germain Becker</small></p>
+                </div>
+                <nav class="grid">
+                    <ul>
+                        <li><small>Données personnelles</small></li>
+                        <li>Conditions générales d'utilisation</li>
+                        <li>Contact</li>
+                    </ul>
+                </nav>
+            </section>
+            <hr>
+            <p>Code sous licence libre. Version <code>1.0</code>.</p>
+            
+        </div>
+    </footer>
+    
+
+    <script>
+        // pour les icones
+        feather.replace();
+    </script>
+    <script>
+        // pour le style du header
+        
+        // Sélectionne l'élément header
+        const header = document.querySelector('body > header');
+
+        // Ajoute un gestionnaire d'événement pour le défilement
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 0) {
+                // Si on scrolle vers le bas, ajoute la classe is-fixed
+                header.classList.add('is-fixed');
+            } else {
+                // Si on revient en haut, retire la classe
+                header.classList.remove('is-fixed');
+            }
+        });
+
+    </script>
+        
+</body>
+</html>

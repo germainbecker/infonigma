@@ -1,0 +1,29 @@
+{% extends "enigmes/base.html" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+
+<style>
+    .centre {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<div class="container">
+    <article class="centre" style="max-width: 600px;">
+        <form method="post">
+            <h1>Connexion</h1>
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Se connecter</button>
+        </form>
+        <p><small>Pas encore de compte ? <a href="{% url 'inscription_enseignant' %}">Créer un compte</a></small>
+        <br><small><a href="{% url 'reinitialisation_mot_de_passe' %}">Mot de passe oublié ?</a></small></p>
+    </article>
+</div>
+
+
+{% endblock %}

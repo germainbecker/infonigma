@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1230.3051"
+   height="377.52307"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="logo_noir.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.78877551"
+     inkscape:cx="801.24191"
+     inkscape:cy="207.28331"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     fill="none"
+     stroke="#000000"
+     stroke-width="37.7833"
+     stroke-linecap="round"
+     d="m 211.68552,210.21334 a 112.62153,112.62153 0 1 0 -1.47218,1.47218 l 125.13505,125.13504 m -66.98406,-86.12235 80.96974,80.96974 -19.13831,19.1383 -80.96972,-80.96974"
+     id="path1"
+     style="fill:#282828;fill-opacity:1;stroke:#282828;stroke-opacity:1" />
+  <text
+     xml:space="preserve"
+     style="font-style:italic;font-weight:bold;font-size:192px;font-family:Archivo;-inkscape-font-specification:'Archivo Bold Italic';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000"
+     x="272.4169"
+     y="203.25058"
+     id="text1"><tspan
+       sodipodi:role="line"
+       id="tspan1"
+       x="272.4169"
+       y="203.25058"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Rubik Dirt';-inkscape-font-specification:'Rubik Dirt';fill:#282828;fill-opacity:1">nfonigma</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:192px;font-family:Archivo;-inkscape-font-specification:'Archivo Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000"
+     x="100.6213"
+     y="200.71501"
+     id="text2"><tspan
+       sodipodi:role="line"
+       id="tspan2"
+       x="100.6213"
+       y="200.71501"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Rubik Dirt';-inkscape-font-specification:'Rubik Dirt Bold';fill:#fafafa;fill-opacity:1">i</tspan></text>
+</svg>

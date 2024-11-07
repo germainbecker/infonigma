@@ -1,0 +1,11 @@
+{% extends "enigmes/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Réinitialisation du mot de passe terminée</h2>
+    <p>Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.</p>
+    <a href="{% url 'connexion_enseignant' %}">Se connecter</a>
+</div>
+
+{% endblock %}
+

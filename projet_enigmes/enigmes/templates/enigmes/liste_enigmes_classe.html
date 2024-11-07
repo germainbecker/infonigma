@@ -1,0 +1,129 @@
+{% extends 'enigmes/base.html' %}
+
+{% block extra_css %}
+<style>
+    [data-tooltip]:not(a, button, input) {
+        border-bottom: none; /* surcharge picocss */
+    }
+    .attente-reponse {
+        color: var(--pico-muted-color);
+        font-style: italic;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .wrap {
+        flex-wrap: wrap;
+    }
+
+    .gap-4 {
+        gap: 2rem;
+    }
+
+    .content-between {
+        justify-content: space-between;
+    }
+
+    .direction-row {
+        flex-direction: row;
+    }
+
+    .alert-danger{
+        color:#a94442;
+        background-color:#f2dede;
+        border-color:#ebccd1
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% load custom_filters %}
+
+<div class="container">
+    <article class="flex content-between wrap secondary">
+        <div class="flex gap-4">
+            <span>Classe : {{ equipe.classe }}</span>
+            <span>Équipe : {{ equipe.nom }}</span>
+        </div>
+        <a href="{% url 'quitter_concours' %}">Quitter le concours</a>
+    </article>
+
+    
+    <section>
+        <h2>Objectifs</h2>
+        <p>
+            Vous avez {{ enigmes|length }} énigme{{ enigmes|pluralize }} à résoudre. Vous trouverez ci-dessous {{ enigmes|pluralize:"un,des" }} lien{{ enigmes|pluralize }} vers {{ enigmes|pluralize:"cette,ces" }} énigme{{ enigmes|pluralize }}. Les énigmes proposées permettent de découvrir des domaines de l'informatique et certaines personnalités.
+        </p>
+        <p>Sachez que chaque énigme est divisée en <strong>deux parties</strong> :</p>
+        <ul>
+            <li>la <strong>première partie</strong> permet de trouver un code qui donne accès à la seconde partie</li>
+            <li>la <strong>seconde partie</strong> permet de trouver un autre code (vous ne pourrez proposer qu'un seul code et vous ne saurez pas s'il est correct ou non)</li>
+        </ul>
+    </section>
+    
+    <h2>Les énigmes</h2>
+
+    {% if not classe_est_active %}
+    <article class="alert-danger">
+        <p>⚠️ Le concours n'est plus actif. Vous ne pouvez plus consulter ou répondre aux énigmes.</p>
+    </article>
+    {% endif %}
+      
+    {% for enigme in enigmes %}
+        <article class="grid">
+            <div>
+                <a {% if classe_est_active %}href="{% url 'resoudre_enigme' enigme.id %}"{% endif %}>
+                    Énigme {{ forloop.counter }} - {{ enigme.titre }} 
+                </a>
+            </div>
+            
+            <div class="etat_progression">
+                {% with progression=progression_dict|get_item:enigme.id %}
+                <ul>
+                    <li>Partie 1 : 
+                        {% if progression %}    
+                            {% if progression.partie1_resolue %}
+                                <span data-tooltip="Code correct">✅</span>
+                            {% else %}
+                                {% if progression.code_partie1 %}
+                                    <span data-tooltip="Code incorrect">❌</span>
+                                {% else %}
+                                    <span class="attente-reponse">en attente d'une proposition</span>
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <span class="attente-reponse">en attente d'une proposition</span>
+                        {% endif %}
+                    </li>
+                    <li>Partie 2 : 
+                        {% if progression %}    
+                            {% if progression.partie2_tentee %}
+                                <span><mark>code proposé</mark></span>
+                            {% else %}
+                                <span class="attente-reponse">en attente d'une proposition</span>
+                            {% endif %}
+                            {% else %}
+                            <span class="attente-reponse">en attente d'une proposition</span>
+                        {% endif %}
+                    </li>
+                </ul>
+            {% endwith %}
+            </div>
+            
+        </article>
+    {% endfor %}
+    
+    <!-- <h2>Créer une nouvelle classe</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ formulaire.as_p }}
+        <button type="submit" class="btn btn-primary">Créer la classe</button>
+    </form> -->
+</div>
+
+
+{% endblock %}

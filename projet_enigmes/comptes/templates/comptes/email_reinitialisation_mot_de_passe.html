@@ -1,0 +1,13 @@
+{% autoescape off %}
+Bonjour,
+
+Vous recevez cet e-mail car vous avez demandé la réinitialisation du mot de passe pour votre compte sur {{ site_name }}.
+
+Veuillez suivre le lien ci-dessous pour choisir un nouveau mot de passe :
+{{ protocol }}://{{ domain }}{% url 'reinitialisation_mot_de_passe_confirme' uidb64=uid token=token %}
+
+Si vous n'avez pas demandé cette réinitialisation, vous pouvez ignorer cet e-mail.
+
+Cordialement,
+L'équipe {{ site_name }}
+{% endautoescape %}
