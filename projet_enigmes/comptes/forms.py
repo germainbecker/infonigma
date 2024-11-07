@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.conf import settings
 
 from .models import Enseignant
 
@@ -49,13 +50,13 @@ LISTE_ADRESSES_CORRECTES = [
     'educagri.fr',
 ]
 
-# LISTE_ADRESSES_EXCEPTIONS = settings.EMAIL_EXCEPTIONS
+LISTE_ADRESSES_EXCEPTIONS = settings.EMAIL_EXCEPTIONS
 
 def adresse_email_valide(adresse: str) -> bool:
     """Renvoie True si et seulement si adresse est une adresse e-mail valide"""
     academie = adresse.split('@')[1]
-    # return academie in LISTE_ADRESSES_CORRECTES or adresse in LISTE_ADRESSES_EXCEPTIONS
-    return academie in LISTE_ADRESSES_CORRECTES
+    return academie in LISTE_ADRESSES_CORRECTES or adresse in LISTE_ADRESSES_EXCEPTIONS
+    # return academie in LISTE_ADRESSES_CORRECTES
 
 
 class FormulaireInscriptionEnseignant(UserCreationForm):
