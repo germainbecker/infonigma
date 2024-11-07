@@ -5,4 +5,6 @@ db.sqlite3
 etapes_hebergement.md
 projet_enigmes/enigmes.json
 projet_enigmes/static/enigmes/
-__pycache__/
+projet_enigmes/comptes/__pycache__/
+projet_enigmes/enigmes/__pycache__/
+projet_enigmes/projet_enigmes/__pycache__/
