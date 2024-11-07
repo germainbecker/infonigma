@@ -1,6 +1,8 @@
 .env
+.gitignore
 venv/
 db.sqlite3
 etapes_hebergement.md
 projet_enigmes/enigmes.json
 projet_enigmes/static/enigmes/
+__pycache__/
