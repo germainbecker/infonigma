@@ -64,7 +64,7 @@
             <div>
                 <label class="label-cgu">
                     {{ formulaire.accepte_cgu }}
-                    <span>En vous inscrivant, vous acceptez les <a href="{% url 'cgu' %}" target="_blank">conditions générales d'utilisation</a></span>
+                    <span>En vous inscrivant, vous acceptez les <a href="{% url 'cgu' %}" target="_blank">conditions générales d'utilisation</a> et la <a href="{% url 'politique_confidentialite' %}" target="_blank">politique de confidentialité</a></span>
                 </label>
                 
                 {% if formulaire.accepte_cgu.help_text %}

@@ -33,6 +33,9 @@ def a_propos(request):
 def cgu(request):
     return render(request, 'enigmes/cgu.html')
 
+def politique_confidentialite(request):
+    return render(request, 'enigmes/politique_confidentialite.html')
+
 ##### CLASSES #####
 
 class ClasseCreationView(LoginRequiredMixin, CreateView):

@@ -5,7 +5,7 @@ from enigmes.models import Enigme
 class Command(BaseCommand):
     help = """Importe les énigmes depuis un fichier JSON
     À utiliser en exécutant la commande :
-    python manage.py import_enigmes path/to/enigmes.json
+    python manage.py charger_enigmes path/to/enigmes.json
     """
 
     def add_arguments(self, parser):

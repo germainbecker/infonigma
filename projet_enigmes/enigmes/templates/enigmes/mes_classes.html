@@ -81,8 +81,9 @@
         </a>
     </p>
     
-    
+    {% if classes %}
     <p>Voici la liste de vos classes</p>
+    {% endif %}
     
     {% for classe in classes %}
         <article id="classe-{{ classe.id }}">

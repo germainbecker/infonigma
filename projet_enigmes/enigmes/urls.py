@@ -30,5 +30,6 @@ urlpatterns = [
 
     path('a-propos/', views.a_propos, name='a_propos'),
     path('cgu/', views.cgu, name='cgu'),
+    path('politique-confidentialite/', views.politique_confidentialite, name='politique_confidentialite'),
     
 ]
