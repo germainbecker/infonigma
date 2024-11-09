@@ -93,7 +93,7 @@ class Classe(models.Model):
         return code
 
 class Equipe(models.Model):
-    nom = models.CharField(max_length=10, unique=True)
+    nom = models.CharField(max_length=100, unique=True)
     classe = models.ForeignKey(Classe, on_delete=models.CASCADE)
     code_equipe = models.CharField(max_length=10, unique=True)
     date_creation = models.DateTimeField(auto_now_add=True)

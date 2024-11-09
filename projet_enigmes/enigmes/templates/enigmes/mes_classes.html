@@ -159,10 +159,6 @@
 
 
 <script>
-    document.addEventListener("htmx:configRequest", (event) => {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        event.detail.headers['X-CSRFToken'] = csrfToken;
-    });
     document.addEventListener("htmx:afterSwap", (event) => {
         // Remplace les icônes Feather après qu'un contenu Htmx a été inséré dans le DOM
         feather.replace();

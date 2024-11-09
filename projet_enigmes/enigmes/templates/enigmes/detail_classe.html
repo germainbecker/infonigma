@@ -57,6 +57,17 @@
     .btn-active-desactive {
         padding: 0.2rem;
     }
+
+    .actions-classe {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .actions-classe a:last-child {
+        margin-left: auto;
+    }
 </style>
 
 {% endblock %}
@@ -69,7 +80,7 @@
 
 <div class="container">
     <h1>Classe "{{ classe.nom }}"</h1>
-    <section>
+    <section class="actions-classe">
         <a class="no-decoration" href="{% url 'reponses_classe' code_classe=classe.code %}">
             <button class="outline">Résultats</button>
         </a>
@@ -79,11 +90,13 @@
         <a class="no-decoration" href="{% url 'supprimer_classe' code_classe=classe.code %}">
             <button class="outline">Supprimer</button>
         </a>
+        <a href="{% url 'liste_classes' %}">Retour à mes classes</a>
+
         
     </section>
     <hr>
     <div id="infos-classe">
-        <p>Code de la classe : {{ classe.code }}</p>
+        <p>Code de la classe : <strong>{{ classe.code }}</strong></p>
         {% if classe.est_active %}
             <span class="classe-activee">Activée</span>
         {% else %}
@@ -126,7 +139,7 @@
     <hr>
     <h3>Équipes inscrites</h3>
     {% if equipes %}
-        <p>Attention, les codes d'équipe ne doivent pas être diffusés. Ils sont visibles pour l'enseignant en cas d'oubli par une équipe.</p>
+        <p>Attention, les codes d'équipe ne doivent pas être diffusés. Ils sont visibles au survol pour l'enseignant en cas d'oubli par une équipe.</p>
         <div class="overflow-x-auto">
             <table>
                 <thead>
@@ -140,7 +153,7 @@
                     {% for equipe in equipes %}
                     <tr>
                         <td>{{ equipe.nom }}</td>
-                        <td>{{ equipe.code_equipe }}</td>
+                        <td><span data-tooltip="{{ equipe.code_equipe }}">••••••••••</span></td>
                         <td>{{ equipe.date_creation|date:"d/m/Y H:i" }}</td>
                     </tr>
                     {% endfor %}
@@ -152,6 +165,7 @@
         <p>Aucune équipe n'a encore été créée pour cette classe.</p>
     {% endif %}
 </div>
+
 
 {% endblock %}
 

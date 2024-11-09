@@ -36,7 +36,7 @@ class FormulaireCodeClasse(forms.Form):
 class FormulaireEquipe(forms.Form):
     nom = forms.CharField(
         label="Nom de l'équipe", 
-        max_length=10, 
+        max_length=100, 
         required=False,
         widget=forms.TextInput(attrs={'placeholder': "Saisisez un nom d'équipe. Celui-ci ne devrait pas comporter de données personnelles."})
     )

@@ -2,6 +2,30 @@
 
 {% block extra_css %}
 <style>
+    #infos-classe {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+    }
+
+    .classe-activee {
+        color:#3c763d;
+        background-color:#dff0d8;
+        padding: 0.2rem;
+        border-radius: 0.2rem;
+    }
+
+    .classe-desactivee {
+        color: #8a3b3b;
+        background-color: #fce3e3;
+        padding: 0.2rem;
+        border-radius: 0.2rem;
+    }
+
+    .btn-active-desactive {
+        padding: 0.2rem;
+    }
+
     /* Surcharge pico css */
     td {
         background-color: inherit;
@@ -76,13 +100,18 @@
     /* Onglets */
     .mode-selector {
         display: flex;
-        gap: 1rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .mode-selector button {
+        margin-bottom: 0;
     }
 
     .tab-content {
     opacity: 0;
     transition: opacity 1s;
     display: none;
+    margin-top: 1rem;
 }
 
 .tab-content.active {
@@ -101,18 +130,53 @@
 
 #classement-container table th {
     white-space: wrap;
-}
+}   
 
-
-    
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
 {% endblock %}
 
 
 {% block content %}
 
 <h1>Résultats de la classe <em>{{ classe.nom }}</em></h1>
-
+<hr>
+<div id="infos-classe">
+    <p>Code de la classe : <strong>{{ classe.code }}</strong></p>
+    {% if classe.est_active %}
+        <span class="classe-activee">Activée</span>
+    {% else %}
+        <span class="classe-desactivee">Désactivée</span>
+    {% endif %}
+    <form action="">
+        {% csrf_token %}
+        {% if classe.est_active %}
+            <button 
+                hx-post="{% url 'desactiver_classe' classe.code %}"
+                hx-target="#infos-classe"
+                hx-swap="outerHTML" 
+                class="outline btn-active-desactive"
+                hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
+            >
+                Désactiver
+            </button>
+        {% else %}
+            <button 
+                hx-post="{% url 'activer_classe' classe.code %}"
+                hx-target="#infos-classe"
+                hx-swap="outerHTML" 
+                class="outline btn-active-desactive"
+                hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
+            >
+                Activer
+            </button>
+        {% endif %}
+    </form>
+</div>
+<hr>
 <div class="mode-selector">
     <button type="button" class="tab-button outline secondary" data-tab="resultats">Résultats par énigme</button>
     <button type="button" class="tab-button outline secondary" data-tab="resultats-par-equipe">Résultats par équipe</button>
@@ -154,8 +218,8 @@
                         
                         <!-- Partie 1 -->
                         <td class="reponse-cell {% if reponse.partie1.code %}{% if reponse.partie1.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            {% if reponse.partie1.code %}
                             <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}">{{ reponse.partie1.code|default:"-" }}</span>
+                            {% if reponse.partie1.code %}
                             <span class="placeholder-reponse">••••</span>
                             {% endif %}
                         </td>
@@ -165,8 +229,8 @@
                         
                         <!-- Partie 2 -->
                         <td class="reponse-cell {% if reponse.partie2.code %}{% if reponse.partie2.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            {% if reponse.partie1.code %}
                             <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}">{{ reponse.partie2.code|default:"-" }}</span>
+                            {% if reponse.partie2.code %}
                             <span class="placeholder-reponse">••••</span>
                             {% endif %}
                         </td>
@@ -209,8 +273,8 @@
                         
                         <!-- Partie 1 -->
                         <td class="reponse-cell {% if reponse.partie1.code %}{% if reponse.partie1.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            {% if reponse.partie1.code %}
                             <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}">{{ reponse.partie1.code|default_if_none:"-" }}</span>
+                            {% if reponse.partie1.code %}
                             <span class="placeholder-reponse">••••</span>
                             {% endif %}
                             
@@ -218,8 +282,8 @@
                         
                         <!-- Partie 2 -->
                         <td class="reponse-cell {% if reponse.partie2.code %}{% if reponse.partie2.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            {% if reponse.partie1.code %}
                             <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}">{{ reponse.partie2.code|default_if_none:"-" }}</span>
+                            {% if reponse.partie2.code %}
                             <span class="placeholder-reponse">••••</span>
                             {% endif %}
                         </td>
@@ -255,7 +319,7 @@
         <p>En cas d'égalité de points, le départage se fait selon les critères suivants :</p>
         <ul>
             <li>L'équipe qui a résolu le plus de secondes parties d'énigmes est mieux classée</li>
-            <li>Si l'égalité persiste, l'équipe qui a donnée le plus rapidement sa dernière bonne réponse est mieux classée</li>
+            <li>Si l'égalité persiste, l'équipe qui a mis le moins de temps pour obtenir ses points est mieux classée (comparaison de la date de la dernière bonne réponse).</li>
         </ul>
     </section>
     <hr>
@@ -289,7 +353,7 @@
                 {% for resultat in classement %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ resultat.equipe.nom }}</td>
+                        <td><span class="code-reponse" data-tooltip="{{ resultat.equipe.nom }}">{{ resultat.equipe.nom }}</span></td>
                         <td><strong>{{ resultat.score_total }}</strong></td>
                         <td>{{ resultat.nb_partie2_resolue }}</td>
                         <td>{{ resultat.temps_formate_derniere_reponse|default_if_none:"-" }}</td>

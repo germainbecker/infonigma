@@ -157,3 +157,4 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'infonigma'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # le dossier où collectstatic copiera les fichiers

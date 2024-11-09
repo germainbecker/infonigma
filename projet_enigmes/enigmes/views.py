@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.conf import settings
 from django.utils import timezone
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.contrib import messages
+from django.views import View
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import DetailView, DeleteView
 
@@ -12,15 +14,19 @@ from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 from django.db.models import Prefetch
 
+
 from .models import Enigme, Classe, Equipe, ProgressionEquipe
 from .forms import FormulaireCreationClasse, FormulairePartie1, FormulairePartie2, FormulaireCodeClasse, FormulaireEquipe, FormulaireRepriseEquipe
 from .decorators import equipe_requise
 
 from .utils import render_markdown_file
 
+from wsgiref.util import FileWrapper
+from io import BytesIO
+
 import unicodedata
-import random
-import string
+import os
+import zipfile
 
 
 # def accueil(request):
@@ -184,7 +190,8 @@ def activer_classe_dans_mes_classes(request, code_classe):
     
     # Rendre le template partiel de la classe
     context = {'classe': classe, 'peut_modifier_classe': peut_modifier_classe}
-    html = render_to_string('enigmes/partials/classe_partial.html', context)
+    # On passe request=request à render_to_string pour inclure le contexte nécessaire pour le CSRF
+    html = render_to_string('enigmes/partials/classe_partial.html', context, request=request)
     return HttpResponse(html)
 
 @login_required
@@ -197,7 +204,8 @@ def desactiver_classe_dans_mes_classes(request, code_classe):
     
     # Rendre le template partiel de la classe
     context = {'classe': classe, 'peut_modifier_classe': peut_modifier_classe}
-    html = render_to_string('enigmes/partials/classe_partial.html', context)
+    # On passe request=request à render_to_string pour inclure le contexte nécessaire pour le CSRF
+    html = render_to_string('enigmes/partials/classe_partial.html', context, request=request)
     return HttpResponse(html)
 
 @login_required
@@ -210,7 +218,8 @@ def activer_classe(request, code_classe):
     
     # Rendre le template partiel de la classe
     context = {'classe': classe, 'peut_modifier_classe': peut_modifier_classe}
-    html = render_to_string('enigmes/partials/detail_classe_partial.html', context)
+    # On passe request=request à render_to_string pour inclure le contexte nécessaire pour le CSRF 
+    html = render_to_string('enigmes/partials/detail_classe_partial.html', context, request=request)
     return HttpResponse(html)
 
 @login_required
@@ -223,7 +232,8 @@ def desactiver_classe(request, code_classe):
     
     # Rendre le template partiel de la classe
     context = {'classe': classe, 'peut_modifier_classe': peut_modifier_classe}
-    html = render_to_string('enigmes/partials/detail_classe_partial.html', context)
+    # On passe request=request à render_to_string pour inclure le contexte nécessaire pour le CSRF
+    html = render_to_string('enigmes/partials/detail_classe_partial.html', context, request=request)
     return HttpResponse(html)
 
 
@@ -243,7 +253,7 @@ def demarrer_concours(request):
                 if not classe.est_active:
                     form.add_error('code_classe', "Le concours est inactif.")
                 else:
-                    return redirect('creer_ou_reprendre_equipe', classe_id=classe.id)
+                    return redirect('creer_ou_reprendre_equipe', code_classe=classe.code)
             except Classe.DoesNotExist:
                 form.add_error('code_classe', "Code incorrect.")
     else:
@@ -252,11 +262,11 @@ def demarrer_concours(request):
     return render(request, 'enigmes/demarrer_concours.html', {'form': form})
 
 
-def creer_ou_reprendre_equipe(request, classe_id):
+def creer_ou_reprendre_equipe(request, code_classe):
     if 'equipe_id' in request.session:
         return redirect('liste_enigmes_classe')
     
-    classe = Classe.objects.get(id=classe_id)
+    classe = Classe.objects.get(code=code_classe)
 
     
     
@@ -780,24 +790,62 @@ def apercu_enigme(request, enigme_id):
     })
 
 
+class TelechargerEnigmesZipView(LoginRequiredMixin, View):
+    REPERTOIRES_AUTORISES = [
+        'enigmes/pdfs',
+    ]
+    
+    def get(self, request, chemin_repertoire, *args, **kwargs):
+        if chemin_repertoire not in self.REPERTOIRES_AUTORISES:
+            return HttpResponse('Dossier non autorisé.', status=403)
+        
+        nom_fichier = chemin_repertoire.replace('/','_')
 
-
-# def detail_enigme(request, enigme_id):
-#     enigme = get_object_or_404(Enigme, pk=enigme_id)
-#     if request.method == 'POST':
-#         formulaire = FormulairePartie1(request.POST)
-#         if formulaire.is_valid():
-#             code = formulaire.cleaned_data['code']
-#             # Vérifier le code et mettre à jour le progrès de l'équipe
-#     else:
-#         formulaire = FormulairePartie1()
-#     enigme_partie2_markdown = render_markdown_file(enigme.partie2_markdown_path)
-#     context = {
-#         'enigme': enigme,
-#         'chemin_enigme_partie1_pdf': enigme.partie1_pdf_path,
-#         'enigme_partie2_markdown' : enigme_partie2_markdown,
-#         'formulaire': formulaire
-#     }
-#     return render(request, 'enigmes/detail_enigme.html', context)
-
+        # Choisir le bon répertoire selon l'environnement
+        if settings.ENVIRONMENT == 'production':
+            # En production, utiliser STATIC_ROOT
+            base_static_dir = settings.STATIC_ROOT
+        else:
+            # En développement, utiliser STATICFILES_DIRS
+            base_static_dir = settings.STATICFILES_DIRS[0]
+            
+        files_dir = os.path.join(base_static_dir, chemin_repertoire)
+        
+        # Vérifier si le répertoire existe
+        if not os.path.exists(files_dir):
+            return HttpResponse(
+                f'Le répertoire {chemin_repertoire} n\'existe pas dans {base_static_dir}.',
+                status=404
+            )
+        
+        # Créer un buffer en mémoire pour stocker le fichier ZIP
+        zip_buffer = BytesIO()
+        
+        try:
+            # Créer le fichier ZIP
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                # Parcourir tous les fichiers du répertoire
+                for root, dirs, files in os.walk(files_dir):
+                    for file in files:
+                        # Chemin complet du fichier
+                        file_path = os.path.join(root, file)
+                        
+                        # Calculer le chemin relatif pour le ZIP
+                        rel_path = os.path.relpath(file_path, files_dir)
+                        
+                        # Ajouter le fichier au ZIP
+                        zip_file.write(file_path, rel_path)
+            
+            # Préparer la réponse HTTP
+            response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
+            response['Content-Disposition'] = f'attachment; filename="{nom_fichier}.zip"'
+            response['Content-Length'] = zip_buffer.tell()
+            
+            return response
+            
+        except Exception as e:
+            return HttpResponse(
+                f'Une erreur s\'est produite lors de la création du ZIP : {str(e)}',
+                status=500
+            )
 

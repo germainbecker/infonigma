@@ -23,12 +23,13 @@
         </article>
     {% endfor %}
     
-    <!-- <h2>Créer une nouvelle classe</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ formulaire.as_p }}
-        <button type="submit" class="btn btn-primary">Créer la classe</button>
-    </form> -->
+    <hr>
+    <section>
+        <h3>Ressources</h3>
+        <h4>Premières parties en PDF</h4>
+        <p>Si vous souhaitez récupérer toutes les premières parties d'énigmes en PDF, pour pouvoir les imprimer, il suffit de cliquer sur ce lien : <a href="{% url 'telecharger_ressources' chemin_repertoire='enigmes/pdfs'%}" class="button">Télécharger les énigmes</a>.</p>
+        <p><strong>Merci de ne pas diffuser ces énigmes sur le Web, pour conserver l'intérêt du concours.</strong></p>
+    </section>
 </div>
 
 
