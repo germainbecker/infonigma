@@ -1,5 +1,4 @@
 {% load static %}
-<h5>Confirmation de votre compte Enseignant</h5>
 <p>Bonjour {{ enseignant.email }},</p>
 <p>Merci de vous être inscrit sur notre plateforme d'énigmes. Pour activer votre compte, veuillez cliquer sur le lien suivant :</p>
 <p><a href="{{ lien_confirmation }}">Confirmer mon compte</a></p>
@@ -7,4 +6,3 @@
 <p>{{ lien_confirmation }}</p>
 <p>Si vous n'avez pas demandé cette inscription, vous pouvez ignorer cet email.</p>
 <p>Bien cordialement, <br>Germain Becker</p>
-<img src="{% static 'img/logo_noir.svg' %}" alt="logo" width="200">

@@ -1,6 +1,9 @@
 from django.db import models
+from django.conf import settings
+
 from comptes.models import Enseignant
 
+import os
 import string
 import random
 
@@ -44,7 +47,8 @@ class Enigme(models.Model):
     
     @property
     def partie2_markdown_path(self):
-        return f'enigmes/markdown/enigme_{self.pk}_partie2.md'
+        # return f'enigmes/markdown/enigme_{self.pk}_partie2.md'
+        return os.path.join(settings.BASE_DIR, '_markdown', f'enigme_{self.pk}_partie2.md')
 
 
     # @property
