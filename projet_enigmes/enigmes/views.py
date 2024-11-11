@@ -902,58 +902,47 @@ def apercu_enigme(request, enigme_id):
 
 
 class TelechargerEnigmesZipView(LoginRequiredMixin, View):
-    REPERTOIRES_AUTORISES = [
-        'enigmes/pdfs',
-    ]
-    
-    def get(self, request, chemin_repertoire, *args, **kwargs):
-        if chemin_repertoire not in self.REPERTOIRES_AUTORISES:
-            return HttpResponse('Dossier non autorisé.', status=403)
-        
-        nom_fichier = chemin_repertoire.replace('/','_')
+    REPERTOIRE_AUTORISE = 'fichiers_proteges/pdfs'
 
-        # Choisir le bon répertoire selon l'environnement
-        if settings.ENVIRONMENT == 'production':
-            # En production, utiliser STATIC_ROOT
-            base_static_dir = settings.STATIC_ROOT
-        else:
-            # En développement, utiliser STATICFILES_DIRS
-            base_static_dir = settings.STATICFILES_DIRS[0]
-            
-        files_dir = os.path.join(base_static_dir, chemin_repertoire)
+    def get(self, request, *args, **kwargs):
+        # Nom du fichier ZIP basé sur le nom du répertoire
+        nom_fichier = f"enigmes_{self.REPERTOIRE_AUTORISE.split('/')[-1]}"
+
+        # Déterminer le chemin absolu vers le répertoire autorisé
+        base_protected_dir = os.path.join(settings.BASE_DIR, self.REPERTOIRE_AUTORISE)
         
         # Vérifier si le répertoire existe
-        if not os.path.exists(files_dir):
+        if not os.path.exists(base_protected_dir):
             return HttpResponse(
-                f'Le répertoire {chemin_repertoire} n\'existe pas dans {base_static_dir}.',
+                "Une erreur s'est produite",
                 status=404
             )
-        
+
         # Créer un buffer en mémoire pour stocker le fichier ZIP
         zip_buffer = BytesIO()
-        
+
         try:
             # Créer le fichier ZIP
             with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
                 # Parcourir tous les fichiers du répertoire
-                for root, dirs, files in os.walk(files_dir):
+                for root, dirs, files in os.walk(base_protected_dir):
                     for file in files:
                         # Chemin complet du fichier
                         file_path = os.path.join(root, file)
-                        
+
                         # Calculer le chemin relatif pour le ZIP
-                        rel_path = os.path.relpath(file_path, files_dir)
-                        
+                        rel_path = os.path.relpath(file_path, base_protected_dir)
+
                         # Ajouter le fichier au ZIP
                         zip_file.write(file_path, rel_path)
-            
+
             # Préparer la réponse HTTP
             response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
             response['Content-Disposition'] = f'attachment; filename="{nom_fichier}.zip"'
             response['Content-Length'] = zip_buffer.tell()
-            
+
             return response
-            
+
         except Exception as e:
             return HttpResponse(
                 f'Une erreur s\'est produite lors de la création du ZIP : {str(e)}',
