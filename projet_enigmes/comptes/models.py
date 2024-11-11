@@ -3,17 +3,21 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.utils.crypto import get_random_string
 
 class EnseignantManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email, password=None, nom=None, prenom=None):
         if not email:
             raise ValueError('Les enseignants doivent avoir une adresse email')
-        user = self.model(email=self.normalize_email(email))
+        user = self.model(
+            email=self.normalize_email(email),
+            nom=nom,
+            prenom=prenom
+        )
         user.set_password(password)
         user.is_active = False  # L'utilisateur est inactif jusqu'à la confirmation de l'email
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
-        user = self.create_user(email, password)
+    def create_superuser(self, email, password, nom=None, prenom=None):
+        user = self.create_user(email, password, nom, prenom)
         user.is_staff = True
         user.is_superuser = True
         user.is_active = True
@@ -22,6 +26,8 @@ class EnseignantManager(BaseUserManager):
 
 class Enseignant(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+    nom = models.CharField(max_length=100, blank=True, null=True)
+    prenom = models.CharField(max_length=100, blank=True, null=True, verbose_name="Prénom")
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     accepte_cgu = models.BooleanField(default=False, verbose_name="Accepte les CGU")

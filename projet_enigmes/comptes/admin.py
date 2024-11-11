@@ -4,7 +4,7 @@ from .models import Enseignant
 
 class EnseignantAdmin(UserAdmin):
     # Les champs à afficher dans la liste des utilisateurs dans l'administration
-    list_display = ('email', 'is_active', 'accepte_cgu', 'is_staff', 'is_superuser')
+    list_display = ('email', 'nom', 'prenom', 'is_active', 'accepte_cgu', 'is_staff', 'is_superuser')
     
     # Les champs sur lesquels on peut cliquer pour accéder à l'objet dans la liste
     list_display_links = ('email',)
@@ -14,7 +14,7 @@ class EnseignantAdmin(UserAdmin):
 
     # Les champs disponibles dans le formulaire de création et modification
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('nom', 'prenom', 'email', 'password')}),
         ('Permissions', {'fields': ('is_active', 'accepte_cgu', 'is_staff', 'is_superuser')}),
         ('Tokens', {'fields': ('email_confirmation_token',)}),
     )
@@ -23,12 +23,12 @@ class EnseignantAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2'),
+            'fields': ('nom', 'prenom', 'email', 'password1', 'password2'),
         }),
     )
 
     # Les champs utilisés pour rechercher un utilisateur
-    search_fields = ('email',)
+    search_fields = ('nom', 'prenom', 'email',)
 
     # Le champ utilisé pour identifier un utilisateur dans l'administration
     ordering = ('email',)

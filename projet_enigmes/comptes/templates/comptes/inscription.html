@@ -23,8 +23,30 @@
         <p>Si vous êtes enseignant, vous pouvez créer un compte en remplissant le formulaire ci-dessous. Seules les adresses email académiques ou de l'AEFE sont acceptées.</p>
         <form method="post">
             {% csrf_token %}
-            <!-- {{ formulaire.as_div }} -->
-
+            <div>
+                {{ formulaire.nom.label_tag}}
+                {{ formulaire.nom }}
+                {% if formulaire.nom.help_text %}
+                    <small class="helptext">{{ formulaire.nom.help_text }}</small>
+                {% endif %}
+                {% if formulaire.nom.errors %}
+                    <div class="text-danger">
+                        {{ formulaire.nom.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ formulaire.prenom.label_tag}}
+                {{ formulaire.prenom }}
+                {% if formulaire.prenom.help_text %}
+                    <small class="helptext">{{ formulaire.prenom.help_text }}</small>
+                {% endif %}
+                {% if formulaire.prenom.errors %}
+                    <div class="text-danger">
+                        {{ formulaire.prenom.errors }}
+                    </div>
+                {% endif %}
+            </div>
             <div>
                 {{ formulaire.email.label_tag}}
                 {{ formulaire.email }}

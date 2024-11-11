@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, AuthenticationForm
+from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
@@ -71,9 +72,13 @@ class FormulaireInscriptionEnseignant(UserCreationForm):
 
     class Meta:
         model = Enseignant
-        fields = ('email', 'password1', 'password2', 'accepte_cgu')
+        fields = ('nom', 'prenom', 'email', 'password1', 'password2', 'accepte_cgu')
         help_texts = {
             'email': 'Utilisez une adresse email académique valide.'
+        }
+        labels = {
+            'nom': "Nom (facultatif)",
+            'prenom': "Prénom (facultatif)"
         }
 
     def clean_email(self):
