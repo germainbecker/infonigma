@@ -593,12 +593,19 @@ div#content blockquote {
             <div class="consignes-enigme">
             <p class="flex gap-1">
                 <i data-feather="external-link" style="color:var(--pico-primary-background)"></i>
-                <span><a class="secondary" href="{% static enigme.partie1_pdf_path %}" target="_blank">Première partie de l'énigme</a></span>
+                <span>
+                    <!-- <a class="secondary" href="{% static enigme.partie1_pdf_path %}" target="_blank">Première partie de l'énigme</a> -->
+                    <a class="secondary" href="{% url 'pdf_protege' enigme_id=enigme.id nom_fichier=enigme.nom_fichier_partie1_pdf %}" target="_blank">Première partie de l'énigme</a>
+                </span>
             </p>
             {% if enigme.a_un_complement_pdf %}
             <p class="flex gap-1">
                 <i data-feather="paperclip" style="color:var(--pico-primary-background)"></i>
-                <span>{{ enigme.titre_complement }} : <a class="secondary" href="{% static enigme.chemin_pdf_complementaire %}" target="_blank">cliquer ici</a></span>
+                <span>
+                    {{ enigme.titre_complement }} : 
+                    <!-- <a class="secondary" href="{% static enigme.chemin_pdf_complementaire %}" target="_blank">cliquer ici</a> -->
+                    <a class="secondary" href="{% url 'pdf_protege' enigme_id=enigme.id nom_fichier=enigme.nom_fichier_pdf_complementaire %}" target="_blank">cliquer ici</a>
+                </span>
             </p>
             {% endif %}          
             </div>

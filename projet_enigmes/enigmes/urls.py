@@ -22,7 +22,7 @@ urlpatterns = [
     path('mes-classes/classe/<str:code_classe>/activer/', views.activer_classe_dans_mes_classes, name='activer_classe_dans_mes_classes'),
     path('mes-classes/classe/<str:code_classe>/desactiver/', views.desactiver_classe_dans_mes_classes, name='desactiver_classe_dans_mes_classes'),
 
-
+    path('pdf-protege/<int:enigme_id>/<str:nom_fichier>', views.pdf_protege, name='pdf_protege'),
     path('enigmes/', views.liste_enigmes, name='liste_enigmes'),
     # path('enigme/<str:enigme_id>/', views.detail_enigme, name='detail_enigme'),
     path('enigme/apercu/<str:enigme_id>/', views.apercu_enigme, name='apercu_enigme'),

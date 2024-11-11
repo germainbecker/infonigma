@@ -135,6 +135,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+PROTECTED_FILES_ROOT = BASE_DIR / 'fichiers_proteges'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

@@ -3,6 +3,8 @@ from django.conf import settings
 
 from comptes.models import Enseignant
 
+from pathlib import Path
+
 import os
 import string
 import random
@@ -37,18 +39,35 @@ class Enigme(models.Model):
 
     @property
     def partie1_pdf_path(self):
+        repertoire = Path(settings.PROTECTED_FILES_ROOT)
+        return repertoire / 'pdfs' / f'enigme_{self.pk}.pdf'
+        
         return f'enigmes/pdfs/enigme_{self.pk}.pdf'
-
+    
+    @property
+    def nom_fichier_partie1_pdf(self):
+        return f'enigme_{self.pk}.pdf'
+        
     @property
     def chemin_pdf_complementaire(self):
         if self.a_un_complement_pdf:
+            repertoire = Path(settings.PROTECTED_FILES_ROOT)
+            return repertoire / 'pdfs' / f'enigme_{self.pk}_complementaire.pdf'
             return f'enigmes/pdfs/enigme_{self.pk}_complementaire.pdf'
+        return None
+    
+    @property
+    def nom_fichier_pdf_complementaire(self):
+        if self.a_un_complement_pdf:
+            return f'enigme_{self.pk}_complementaire.pdf'
         return None
     
     @property
     def partie2_markdown_path(self):
         # return f'enigmes/markdown/enigme_{self.pk}_partie2.md'
-        return os.path.join(settings.BASE_DIR, '_markdown', f'enigme_{self.pk}_partie2.md')
+        repertoire = Path(settings.PROTECTED_FILES_ROOT)
+        return repertoire / 'markdown' / f'enigme_{self.pk}_partie2.md'
+        return os.path.join(settings.PROTECTED_FILES_ROOT, 'markdown', f'enigme_{self.pk}_partie2.md')
 
 
     # @property

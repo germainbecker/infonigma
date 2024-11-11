@@ -7,8 +7,8 @@ import markdown
 
 def render_markdown_file(file_path):
     """Lire un fichier markdown et remplacer les chemins d'images pour utiliser Django static."""
-    static_dir = Path(settings.STATICFILES_DIRS[0])
-    markdown_file = static_dir / file_path
+    directory = Path(settings.PROTECTED_FILES_ROOT)
+    markdown_file = directory / 'markdown' / file_path
     
     if not markdown_file.exists() or not markdown_file.is_file():
         raise FileNotFoundError(f"Le fichier {file_path} n'existe pas.")

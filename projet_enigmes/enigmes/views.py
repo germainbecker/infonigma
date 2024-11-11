@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.utils import timezone
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseForbidden, FileResponse, Http404
+
 from django.contrib import messages
 from django.views import View
 from django.views.generic.edit import CreateView, UpdateView
@@ -23,11 +24,11 @@ from .utils import render_markdown_file
 
 from wsgiref.util import FileWrapper
 from io import BytesIO
-
+from pathlib import Path
 import unicodedata
 import os
 import zipfile
-
+import re
 
 # def accueil(request):
 #     return render(request, 'enigmes/accueil.html')
@@ -41,6 +42,116 @@ def cgu(request):
 
 def politique_confidentialite(request):
     return render(request, 'enigmes/politique_confidentialite.html')
+
+
+#### ACCES RESTREINT AUX FICHIERS ####
+
+def pdf_protege(request, enigme_id, nom_fichier):
+    # Ajouter request à l'utilisateur pour accéder à la session
+    request.user.request = request
+
+    # Vérifier que le fichier demandé correspond bien à l'énigme
+    if not verifie_coherence_enigme_nom_fichier(enigme_id, nom_fichier):
+        raise Http404("Fichier non trouvé")
+    
+    if not utilisateur_a_acces_enigme(request.user, enigme_id):
+        raise Http404("Vous n'avez pas accès à ce fichier")
+    
+    # Vérifier que le fichier est bien un PDF
+    if not nom_fichier.lower().endswith('.pdf'):
+        raise Http404("Format de fichier non autorisé")
+
+    # Construire le chemin complet en utilisant les paramètres
+    chemin_complet = os.path.join(
+        settings.PROTECTED_FILES_ROOT,
+        'pdfs',
+        nom_fichier
+    )
+
+    # Vérifier que le chemin est sécurisé
+    if not est_chemin_securise(chemin_complet):
+        raise Http404("Chemin de fichier non autorisé")
+        
+    # Vérifier que le fichier existe
+    if not os.path.exists(chemin_complet):
+        raise Http404("Fichier non trouvé")
+    
+    try:
+        response = FileResponse(open(chemin_complet, 'rb'), content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{nom_fichier}"'
+        return response
+    except FileNotFoundError:
+        raise Http404("Fichier non trouvé")
+
+
+def verifie_coherence_enigme_nom_fichier(enigme_id, nom_fichier):
+    """
+    Vérifie que le nom du fichier correspond bien à l'énigme demandée,
+    soit pour le fichier principal, soit pour le fichier complémentaire
+    """
+    try:
+        enigme = Enigme.objects.get(id=enigme_id)
+        # Construction des deux noms de fichiers possibles
+        nom_fichier_attendu = enigme.nom_fichier_partie1_pdf
+        nom_fichier_complementaire_attendu = enigme.nom_fichier_pdf_complementaire
+        
+        # Le fichier est valide s'il correspond à l'un des deux formats
+        return nom_fichier in (nom_fichier_attendu, nom_fichier_complementaire_attendu)
+        
+    except Enigme.DoesNotExist:
+        return False
+
+
+def utilisateur_a_acces_enigme(user, enigme_id):
+    """
+    Vérifie si l'utilisateur a accès à l'énigme spécifique basé sur:
+    - Son statut d'authentification (accès total si authentifié)
+    - Son équipe (via cookie de session)
+    - L'état actif de sa classe
+    - Les énigmes associées à sa classe
+    
+    Args:
+        user: L'utilisateur Django (peut être AnonymousUser)
+        enigme_id: L'ID de l'énigme à vérifier
+    
+    Returns:
+        bool: True si l'accès est autorisé, False sinon
+    """
+    # Si l'utilisateur est authentifié, accès total
+    if user.is_authenticated:
+        return True
+    
+    # Pour les utilisateurs non authentifiés, vérifier le cookie de session
+    request = getattr(user, 'request', None)
+    if not request:
+        return False
+    
+    equipe_id = request.session.get('equipe_id')
+    if not equipe_id:
+        return False
+    
+    try:
+        # Récupérer l'équipe et vérifier si sa classe est active
+        equipe = Equipe.objects.select_related('classe').get(id=equipe_id)
+        if not equipe.classe.est_active:
+            return False
+        
+        # Vérifier si l'énigme fait partie des énigmes de la classe
+        print(enigme_id, equipe.classe.enigmes.filter(id=enigme_id))
+        return equipe.classe.enigmes.filter(id=enigme_id).exists()
+        
+    except Equipe.DoesNotExist:
+        return False
+
+def est_chemin_securise(file_path):
+    """
+    Vérifie que le chemin du fichier est sécurisé et ne sort pas
+    du répertoire autorisé
+    """
+    protected_root = os.path.realpath(settings.PROTECTED_FILES_ROOT)
+    requested_path = os.path.realpath(file_path)
+    return requested_path.startswith(protected_root)
+
 
 ##### CLASSES #####
 

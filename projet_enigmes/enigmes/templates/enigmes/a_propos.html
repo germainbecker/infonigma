@@ -22,12 +22,17 @@
 
     <h4>Pourquoi cette nouvelle plateforme ?</h4>
     <p>Depuis deux ans, plusieurs collègues sont tombés par hasard sur le site dédié aux énigmes sur lequel on ne trouvait pas les (premières parties d') énigmes pour conserver l'aspect "concours" que l'on avait mis en place. Pour éviter que les énigmes soient diffusées sur d'autres canaux, j'ai développé cette nouvelle plateforme qui permet à tout enseignant de créer un compte afin de proposer une ou plusieurs énigmes à résoudre à leurs élèves.</p>
-    <p>Vous pouvez donc en profiter si vous le souhaitez. Cela peut être intéressant dans le cadre de la semaine NSI par exemple, ou à n'importe quel moment de l'année finalement.</p>
+    <p>Vous pouvez donc en profiter si vous le souhaitez. Cela peut être intéressant dans le cadre de la <a href="https://www.semaine-nsi.fr/">semaine NSI</a> par exemple, ou à n'importe quel moment de l'année finalement.</p>
+
+    <h4>Technologies utilisées</h4>
+    <p>Bien que l'application soit relativement "simple", j'ai choisi d'utiliser le framework <a href="https://www.djangoproject.com/">Django</a>, que je connaissais déjà.</p>
+    <p>Couplé à <a href="https://htmx.org/">HTMX</a> pour quelques requêtes AJAX, on obtient quelque chose de rapide et relativement facile à implémenter sans avoir besoin d'écrire trop de JavaScript.</p>
+    <p>Concernant le CSS, j'ai testé pour l'occasion le (micro) framework <a href="https://picocss.com/">Pico CSS</a>, qui se révèle sobre mais efficace.</p>
     
     <h4>Comment ?</h4>
     <p>Je voulais aussi depuis un moment tester les agents conversationnels dopés à l'IA dans l'aide à la production de code informatique dans un projet de plus grande envergure. La démarche a donc été de créer cette application en collaboration avec <em>ChatGPT</em>, <em>Claude</em> et <em>Le Chat</em> de Mistral AI, dans leurs versions gratuites.</p>
     <p>Force est de constater, que les échanges avec ces modèles sont assez bluffants. Cela fait gagner un temps fou, mais je constate que c'est réellement efficace si on possède déjà des connaissances en la matière. Je maîtrisais déjà le framework Django, j'ai donc été capable de comprendre d'où venait certains problèmes dans le code proposé par les IA, et de le corriger et de l'adapter. La connaissance du framework m'a aussi permi de savoir exactement quel prompt rédiger pour obtenir le code escompté et ainsi gagner en rapidité.</p>
-    <p>Bilan des courses : le coeur de l'application, sa partie fonctionnelle, a été développée en quelques dizaines d'heures (env. 30-40h). L'aspect graphique a également nécessité un peu de temps car j'ai utilisé le framework <a href="https://picocss.com/">Pico CSS</a> que je ne connaissais pas, mais qui a tout de même fait accélérer le développement pour un résultat assez satisfaisant.</p>
+    <p>Bilan des courses : le coeur de l'application, sa partie fonctionnelle, a été développée en quelques dizaines d'heures. L'aspect graphique a également nécessité un peu de temps car je ne connaissais pas le framework Pico CSS, mais ce dernier a tout de même fait accélérer le développement pour un résultat satisfaisant.</p>
     
     <h4>Erreurs ? Bugs ?</h4>
     <p>Il y a probablement des erreurs et des bugs qui perdurent, si vous en trouvez, merci de les faire remonter afin que j'essaie de les corriger rapidement.</p>
