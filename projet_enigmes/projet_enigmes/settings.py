@@ -149,15 +149,17 @@ AUTHENTICATION_BACKENDS = [
     'comptes.backends.CustomModelBackend',   
 ]
 
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+if ENVIRONMENT == 'production':
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = env('EMAIL_ADDRESS')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+    DEFAULT_FROM_EMAIL = 'infonigma'
+    ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_ADDRESS')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'infonigma'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # le dossier où collectstatic copiera les fichiers

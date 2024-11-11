@@ -104,6 +104,10 @@ class FormulaireConnexionEnseignant(AuthenticationForm):
         ),
     }
 
+class EmailForm(forms.Form):
+    sujet = forms.CharField(label='Sujet', max_length=100)
+    message = forms.CharField(label='Message', widget=forms.Textarea)
+
 # class FormulaireConnexionEnseignant(AuthenticationForm):
 #     # email = forms.EmailField(widget=forms.EmailInput(attrs={'autofocus': True}))
 
