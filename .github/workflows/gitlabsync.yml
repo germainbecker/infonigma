@@ -15,5 +15,5 @@ jobs:
     - uses: wangchucheng/git-repo-sync@v0.1.0
       with:
         target-url: https://forge.apps.education.fr/germain-christo.becker/infonigma
-        target-username: @germain-christo.becker
+        target-username: "@germain-christo.becker"
         target-token: ${{ secrets.FORGE_APPS_EDU_GITLAB_TOKEN }}
