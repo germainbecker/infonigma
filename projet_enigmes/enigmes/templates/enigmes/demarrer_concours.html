@@ -3,31 +3,28 @@
 {% block extra_css %}
 <style>
     .centre {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-@media (min-width: 1280px) {
-    .hero .hook {
-        max-width: 950px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
-}
 
-@media (min-width: 1024px) {
-    .hero .hook {
-        max-width: 700px;
+    @media (min-width: 1280px) {
+        .hero .hook {
+            max-width: 950px;
+        }
     }
-}
 
-.hero {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-}
+    @media (min-width: 1024px) {
+        .hero .hook {
+            max-width: 700px;
+        }
+    }
 
-
-
-
+    .hero {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
 </style>
 {% endblock %}
 
@@ -40,9 +37,10 @@
                 <h1>Résoudre des énigmes</h1>
                 <p>Pour découvrir l'informatique</p>
             </hgroup>
-            <p>Ce site propose plusieurs énigmes permettant de découvrir des personnalités et des thématiques liées à l'informatique.</p>
+            <p>Ce site propose plusieurs énigmes permettant de découvrir des personnalités et des thématiques liées à
+                l'informatique.</p>
             <p>Aucun prérequis n'est nécessaire !</p>
-            
+
             <article class="centre" style="max-width: 600px;margin-top: 3rem;">
                 <form method="POST">
                     {% csrf_token %}
@@ -52,15 +50,12 @@
                 <small>
                     <a href="{% url 'reprendre_equipe' %}">Reprendre le concours ?</a>
                 </small>
-                
+
             </article>
 
         </div>
-        
+
     </section>
 </div>
-
-
-
 
 {% endblock %}

@@ -5,6 +5,7 @@
     section:not(:nth-of-type(1)) {
         margin-top: 2rem;
     }
+
     section:not(:last-of-type) {
         margin-bottom: 2rem;
     }
@@ -18,31 +19,37 @@
     <section>
         <h1>Les énigmes</h1>
 
-        <p><strong>Chaque énigme est divisée en deux parties</strong>, chacune permettant de trouver un <strong>code</strong> :</p>
+        <p><strong>Chaque énigme est divisée en deux parties</strong>, chacune permettant de trouver un
+            <strong>code</strong> :</p>
         <ul>
             <li>la <strong>première partie</strong> est fournie au format PDF (peut être imprimée pour diffusion)</li>
-            <li>la <strong>seconde partie</strong> est débloquée grâce au code de la première partie, et s'affiche directement sur la plateforme</li>
+            <li>la <strong>seconde partie</strong> est débloquée grâce au code de la première partie, et s'affiche
+                directement sur la plateforme</li>
         </ul>
-        <p>Pour pimenter un peu les choses, les équipes ne peuvent proposer qu'une seule réponse pour la seconde partie et la plateforme ne leur indiquera pas si cette réponse est correcte ou non. Cela permet en outre de garder les bonnes réponses secrètes et préserver l'équité dans d'éventuels concours organisés.</p>
-        
+        <p>Pour pimenter un peu les choses, les équipes ne peuvent proposer qu'une seule réponse pour la seconde partie
+            et la plateforme ne leur indiquera pas si cette réponse est correcte ou non. Cela permet en outre de garder
+            les bonnes réponses secrètes et préserver l'équité dans d'éventuels concours organisés.</p>
+
         <p>Voici les différentes énigmes qui peuvent être proposées à vos élèves :</p>
-        
-          
+
+
         {% for enigme in enigmes %}
-            <article class="grid">
-                <a href="{% url 'apercu_enigme' enigme.id %}">
-                    Énigme {{ enigme.id }} - {{ enigme.titre }} 
-                </a>
-            </article>
+        <article class="grid">
+            <a href="{% url 'apercu_enigme' enigme.id %}">
+                Énigme {{ enigme.id }} - {{ enigme.titre }}
+            </a>
+        </article>
         {% endfor %}
     </section>
-    
+
     <hr>
-    
+
     <section>
         <h3>Ressources</h3>
         <h4>Premières parties en PDF</h4>
-        <p>Si vous souhaitez récupérer toutes les premières parties d'énigmes en PDF, pour pouvoir les imprimer, il suffit de cliquer sur ce lien : <a href="{% url 'telecharger_ressources' %}" class="button">Télécharger les énigmes</a>.</p>
+        <p>Si vous souhaitez récupérer toutes les premières parties d'énigmes en PDF, pour pouvoir les imprimer, il
+            suffit de cliquer sur ce lien : <a href="{% url 'telecharger_ressources' %}" class="button">Télécharger les
+                énigmes</a>.</p>
         <p><strong>Merci de ne pas diffuser ces énigmes sur le Web, pour conserver l'intérêt du concours.</strong></p>
     </section>
 
@@ -76,11 +83,14 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div> 
+            </div>
         </details>
 
-        <p>Si vous souhaitez récupérer un document PDF contenant toutes les corrections des énigmes, il suffit de cliquer sur ce lien : <a href="{% url 'telecharger_reponses_enigmes' %}" download target="_blank" class="button">Télécharger les corrections</a>.</p>
-        <p><strong>Merci de ne pas diffuser ces corrections sur le Web, pour conserver l'intérêt du concours.</strong></p>
+        <p>Si vous souhaitez récupérer un document PDF contenant toutes les corrections des énigmes, il suffit de
+            cliquer sur ce lien : <a href="{% url 'telecharger_reponses_enigmes' %}" download target="_blank"
+                class="button">Télécharger les corrections</a>.</p>
+        <p><strong>Merci de ne pas diffuser ces corrections sur le Web, pour conserver l'intérêt du concours.</strong>
+        </p>
 
     </section>
 </div>

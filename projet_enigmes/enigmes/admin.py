@@ -26,11 +26,6 @@ class ClasseAdmin(admin.ModelAdmin):
             return ('nom', 'code', 'enseignant', 'enigmes')
         return self.fields  # Lors de la création/modification, on utilise `fields`
 
-    # def save_model(self, request, obj, form, change):
-    #     if not obj.code:
-    #         obj.code = obj.generer_code_unique()
-    #     super().save_model(request, obj, form, change)
-
 
 @admin.register(Equipe)
 class EquipeAdmin(admin.ModelAdmin):

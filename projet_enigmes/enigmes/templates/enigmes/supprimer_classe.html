@@ -9,11 +9,11 @@
     <h1>Confirmation de suppression</h1>
     <h3>Voulez-vous vraiment supprimer la classe "{{ classe.nom }}" ?</h3>
     <p>
-        <strong>Attention :</strong> 
+        <strong>Attention :</strong>
         {% if nb_equipes > 0 %}
-            Cette action est irréversible et supprimera la classe et ses {{ nb_equipes }} équipe(s) associée(s).
+        Cette action est irréversible et supprimera la classe et ses {{ nb_equipes }} équipe(s) associée(s).
         {% else %}
-            Cette action est irréversible et supprimera définitivement la classe.
+        Cette action est irréversible et supprimera définitivement la classe.
         {% endif %}
     </p>
     <form method="post">
@@ -26,4 +26,3 @@
 </div>
 
 {% endblock %}
-

@@ -12,19 +12,10 @@
 
 {% block content %}
 {% load static %}
-<!-- <div class="container">
-    <h1>Classe : {{ classe.nom }}</h1>
-    <p>Saisissez un nom d'équipe pour créer une nouvelle équipe ou saisissez un code d'équipe pour reprendre une équipe existante.</p>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_div }}
-        <button type="submit">Continuer</button>
-    </form>
-</div> -->
 
 <div class="container">
     <h1>Reprendre le concours</h1>
-    
+
     <p>Saisissez le code unique qui vous a été communiqué lors de la création de votre équipe.</p>
 
     <form method="POST" class="mt-4">
@@ -33,7 +24,5 @@
         <button type="submit">Continuer</button>
     </form>
 </div>
-
-
 
 {% endblock %}

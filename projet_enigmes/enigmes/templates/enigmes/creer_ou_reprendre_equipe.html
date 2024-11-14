@@ -7,20 +7,6 @@
         gap: 1rem;
     }
 
-    /* .btn-mode {
-        padding: 0.5rem 1rem;
-        border: 1px solid #ccc;
-        background: #f8f9fa;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .btn-mode.active {
-        background: #007bff;
-        color: white;
-        border-color: #0056b3;
-    } */
-
     .form-group {
         margin-bottom: 1rem;
     }
@@ -30,26 +16,15 @@
         font-size: 0.875rem;
         margin-top: 0.25rem;
     }
-
-
 </style>
 {% endblock %}
 
 {% block content %}
 {% load static %}
-<!-- <div class="container">
-    <h1>Classe : {{ classe.nom }}</h1>
-    <p>Saisissez un nom d'équipe pour créer une nouvelle équipe ou saisissez un code d'équipe pour reprendre une équipe existante.</p>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_div }}
-        <button type="submit">Continuer</button>
-    </form>
-</div> -->
 
 <div class="container">
     <h1>Classe : {{ classe.nom }}</h1>
-    
+
     <p>Vous pouvez créer une équipe ou reprendre le concours si vous avez déjà créé votre équipe.</p>
 
     <div class="mode-selector">
@@ -59,13 +34,13 @@
 
     <form method="POST" class="mt-4">
         {% csrf_token %}
-        
+
         <div id="creation-mode" class="form-mode">
             <div class="form-group">
                 {{ form.nom.label_tag }}
                 {{ form.nom }}
                 {% if form.nom.errors %}
-                    <div class="errorlist">{{ form.nom.errors }}</div>
+                <div class="errorlist">{{ form.nom.errors }}</div>
                 {% endif %}
             </div>
         </div>
@@ -75,15 +50,15 @@
                 {{ form.code_equipe.label_tag }}
                 {{ form.code_equipe }}
                 {% if form.code_equipe.errors %}
-                    <div class="errorlist">{{ form.code_equipe.errors }}</div>
+                <div class="errorlist">{{ form.code_equipe.errors }}</div>
                 {% endif %}
             </div>
         </div>
 
         {% if form.non_field_errors %}
-            <div class="errorlist">
-                {{ form.non_field_errors }}
-            </div>
+        <div class="errorlist">
+            {{ form.non_field_errors }}
+        </div>
         {% endif %}
 
         <button type="submit">Continuer</button>
@@ -91,11 +66,11 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const buttons = document.querySelectorAll('.btn-mode');
         const creationMode = document.getElementById('creation-mode');
         const repriseMode = document.getElementById('reprise-mode');
-        
+
         function switchMode(mode) {
             if (mode === 'creation') {
                 creationMode.style.display = 'block';
@@ -117,9 +92,9 @@
                 document.querySelector('#id_nom').value = '';
             }
         }
-    
+
         buttons.forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const mode = this.getAttribute('data-mode');
                 switchMode(mode);
             });

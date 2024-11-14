@@ -9,8 +9,8 @@
     }
 
     .classe-activee {
-        color:#3c763d;
-        background-color:#dff0d8;
+        color: #3c763d;
+        background-color: #dff0d8;
         padding: 0.2rem;
         border-radius: 0.2rem;
     }
@@ -31,7 +31,8 @@
         background-color: inherit;
     }
 
-    th, td {
+    th,
+    td {
         white-space: nowrap;
     }
 
@@ -53,25 +54,28 @@
     tr:nth-child(even) {
         background-color: #f3f4f6;
     }
-    
+
     /* Styles pour les cellules de réponse */
     .reponse-cell {
         transition: background-color 0.3s ease;
     }
-    
+
     .reponse-correcte {
-        background-color: #d1fae5 !important; /* Vert clair */
+        background-color: #d1fae5 !important;
+        /* Vert clair */
     }
-    
+
     .reponse-incorrecte {
-        background-color: #fee2e2 !important; /* Rouge clair */
+        background-color: #fee2e2 !important;
+        /* Rouge clair */
     }
-    
+
     /* Quand les réponses sont masquées */
     .reponses-masquees .reponse-cell {
-        background-color: inherit !important; /* Réinitialise la couleur de fond */
+        background-color: inherit !important;
+        /* Réinitialise la couleur de fond */
     }
-    
+
     .reponses-masquees .code-reponse {
         display: none;
     }
@@ -83,19 +87,19 @@
     .reponses-masquees .code-reponse {
         display: none;
     }
-    
+
     .reponses-masquees .placeholder-reponse {
         display: inline;
     }
-    
+
     .placeholder-reponse {
         display: none;
     }
 
     /* surcharge picocss */
     [data-tooltip]:not(a, button, input) {
-	border-bottom: none;
-}
+        border-bottom: none;
+    }
 
     /* Onglets */
     .mode-selector {
@@ -103,40 +107,42 @@
         gap: 0.5rem;
         flex-wrap: wrap;
     }
+
     .mode-selector button {
         margin-bottom: 0;
     }
 
     .tab-content {
-    opacity: 0;
-    transition: opacity 1s;
-    display: none;
-    margin-top: 1rem;
-}
+        opacity: 0;
+        transition: opacity 1s;
+        display: none;
+        margin-top: 1rem;
+    }
 
-.tab-content.active {
-    opacity: 1;
-    display: block;
-}
+    .tab-content.active {
+        opacity: 1;
+        display: block;
+    }
 
-.tab-content.hidden {
-    opacity: 0;
-    display: none;
-}
+    .tab-content.hidden {
+        opacity: 0;
+        display: none;
+    }
 
-#loading-spinner {
-    display: none;
-}
+    #loading-spinner {
+        display: none;
+    }
 
-#classement-container table th {
-    white-space: wrap;
-}   
-
+    #classement-container table th {
+        white-space: wrap;
+    }
 </style>
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/htmx.org@2.0.3"
+    integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
+    crossorigin="anonymous"></script>
 {% endblock %}
 
 
@@ -147,53 +153,42 @@
 <div id="infos-classe">
     <p>Code de la classe : <strong>{{ classe.code }}</strong></p>
     {% if classe.est_active %}
-        <span class="classe-activee">Activée</span>
+    <span class="classe-activee">Activée</span>
     {% else %}
-        <span class="classe-desactivee">Désactivée</span>
+    <span class="classe-desactivee">Désactivée</span>
     {% endif %}
     <form action="">
         {% csrf_token %}
         {% if classe.est_active %}
-            <button 
-                hx-post="{% url 'desactiver_classe' classe.code %}"
-                hx-target="#infos-classe"
-                hx-swap="outerHTML" 
-                class="outline btn-active-desactive"
-                hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
-            >
-                Désactiver
-            </button>
+        <button hx-post="{% url 'desactiver_classe' classe.code %}" hx-target="#infos-classe" hx-swap="outerHTML"
+            class="outline btn-active-desactive"
+            hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');">
+            Désactiver
+        </button>
         {% else %}
-            <button 
-                hx-post="{% url 'activer_classe' classe.code %}"
-                hx-target="#infos-classe"
-                hx-swap="outerHTML" 
-                class="outline btn-active-desactive"
-                hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');"
-            >
-                Activer
-            </button>
+        <button hx-post="{% url 'activer_classe' classe.code %}" hx-target="#infos-classe" hx-swap="outerHTML"
+            class="outline btn-active-desactive"
+            hx-on="htmx:send: this.setAttribute('aria-busy', 'true'); htmx:afterSwap: this.removeAttribute('aria-busy');">
+            Activer
+        </button>
         {% endif %}
     </form>
 </div>
 <hr>
 <div class="mode-selector">
     <button type="button" class="tab-button outline secondary" data-tab="resultats">Résultats par énigme</button>
-    <button type="button" class="tab-button outline secondary" data-tab="resultats-par-equipe">Résultats par équipe</button>
+    <button type="button" class="tab-button outline secondary" data-tab="resultats-par-equipe">Résultats par
+        équipe</button>
     <button type="button" class="tab-button outline secondary" data-tab="classement">Classement</button>
 </div>
 
 <div class="container reponses-masquees tab-content" id="resultats-container">
-    <div>        
+    <div>
         <section>
             <label>
-                <input id="toggle-reponses" name="affichage-reponses" type="checkbox" role="switch"  />
+                <input id="toggle-reponses" name="affichage-reponses" type="checkbox" role="switch" />
                 Afficher les réponses
             </label>
-            <!-- <label class="toggle-switch">
-                <input type="checkbox" id="toggle-reponses" checked>
-                <span class="slider"></span>
-            </label> -->
         </section>
     </div>
 
@@ -215,10 +210,12 @@
                     {% for reponse in resultat.reponses_equipes %}
                     <tr>
                         <td>{{ reponse.equipe.nom }}</td>
-                        
+
                         <!-- Partie 1 -->
-                        <td class="reponse-cell {% if reponse.partie1.code %}{% if reponse.partie1.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}">{{ reponse.partie1.code|default:"-" }}</span>
+                        <td
+                            class="reponse-cell {% if reponse.partie1.code %}{% if reponse.partie1.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
+                            <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}">{{
+                                reponse.partie1.code|default:"-" }}</span>
                             {% if reponse.partie1.code %}
                             <span class="placeholder-reponse">••••</span>
                             {% endif %}
@@ -226,10 +223,12 @@
                         <td>
                             {{ reponse.partie1.duree|default:"-" }}
                         </td>
-                        
+
                         <!-- Partie 2 -->
-                        <td class="reponse-cell {% if reponse.partie2.code %}{% if reponse.partie2.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}">{{ reponse.partie2.code|default:"-" }}</span>
+                        <td
+                            class="reponse-cell {% if reponse.partie2.code %}{% if reponse.partie2.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
+                            <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}">{{
+                                reponse.partie2.code|default:"-" }}</span>
                             {% if reponse.partie2.code %}
                             <span class="placeholder-reponse">••••</span>
                             {% endif %}
@@ -249,66 +248,70 @@
 <div class="container-resultats-par-equipe reponses-masquees tab-content hidden" id="resultats-par-equipe-container">
     <section>
         <label>
-            <input id="toggle-reponses-par-equipe" name="affichage-reponses-par-equipe" type="checkbox" role="switch"  />
+            <input id="toggle-reponses-par-equipe" name="affichage-reponses-par-equipe" type="checkbox" role="switch" />
             Afficher les réponses
         </label>
     </section>
     {% for resultat in resultats_par_equipe %}
     <section style="margin:2rem auto" class="equipe-results">
         <h4>Équipe {{ resultat.equipe.nom }}</h2>
-        <div class="overflow-x-auto">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Énigme</th>
-                        <th>Code partie 1 (1pt)</th>
-                        <th>Code partie 2 (3pts)</th>
-                        <th>Points</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for reponse in resultat.reponses_enigmes %}
-                    <tr>
-                        <td>{{ forloop.counter }} - {{ reponse.enigme.titre }}</td>
-                        
-                        <!-- Partie 1 -->
-                        <td class="reponse-cell {% if reponse.partie1.code %}{% if reponse.partie1.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}">{{ reponse.partie1.code|default_if_none:"-" }}</span>
-                            {% if reponse.partie1.code %}
-                            <span class="placeholder-reponse">••••</span>
-                            {% endif %}
-                            
-                        </td>
-                        
-                        <!-- Partie 2 -->
-                        <td class="reponse-cell {% if reponse.partie2.code %}{% if reponse.partie2.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}">{{ reponse.partie2.code|default_if_none:"-" }}</span>
-                            {% if reponse.partie2.code %}
-                            <span class="placeholder-reponse">••••</span>
-                            {% endif %}
-                        </td>
-                        
-                        <!-- Points -->
-                        <td>
-                            <span class="code-reponse">
-                                {{ reponse.points }}
-                            </span>
-                            <span class="placeholder-reponse">•</span>                 
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">Score total</td>
-                        <td>
-                            <span class="code-reponse">{{ resultat.score_total }}</span>                            
-                            <span class="placeholder-reponse">•</span> 
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Énigme</th>
+                            <th>Code partie 1 (1pt)</th>
+                            <th>Code partie 2 (3pts)</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reponse in resultat.reponses_enigmes %}
+                        <tr>
+                            <td>{{ forloop.counter }} - {{ reponse.enigme.titre }}</td>
+
+                            <!-- Partie 1 -->
+                            <td
+                                class="reponse-cell {% if reponse.partie1.code %}{% if reponse.partie1.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
+                                <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}">{{
+                                    reponse.partie1.code|default_if_none:"-" }}</span>
+                                {% if reponse.partie1.code %}
+                                <span class="placeholder-reponse">••••</span>
+                                {% endif %}
+
+                            </td>
+
+                            <!-- Partie 2 -->
+                            <td
+                                class="reponse-cell {% if reponse.partie2.code %}{% if reponse.partie2.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
+                                <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}">{{
+                                    reponse.partie2.code|default_if_none:"-" }}</span>
+                                {% if reponse.partie2.code %}
+                                <span class="placeholder-reponse">••••</span>
+                                {% endif %}
+                            </td>
+
+                            <!-- Points -->
+                            <td>
+                                <span class="code-reponse">
+                                    {{ reponse.points }}
+                                </span>
+                                <span class="placeholder-reponse">•</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Score total</td>
+                            <td>
+                                <span class="code-reponse">{{ resultat.score_total }}</span>
+                                <span class="placeholder-reponse">•</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
     </section>
     {% endfor %}
 </div>
@@ -319,7 +322,8 @@
         <p>En cas d'égalité de points, le départage se fait selon les critères suivants :</p>
         <ul>
             <li>L'équipe qui a résolu le plus de secondes parties d'énigmes est mieux classée</li>
-            <li>Si l'égalité persiste, l'équipe qui a mis le moins de temps pour obtenir ses points est mieux classée (comparaison de la date de la dernière bonne réponse).</li>
+            <li>Si l'égalité persiste, l'équipe qui a mis le moins de temps pour obtenir ses points est mieux classée
+                (comparaison de la date de la dernière bonne réponse).</li>
         </ul>
     </section>
     <hr>
@@ -327,12 +331,19 @@
         <h3>🏆 Podium</h3>
         {% if classement %}
         <ul>
-            <li><span style="font-size:1.5rem">🥇</span> {% if classement.0.score_total > 0 %}Équipe <strong>{{ classement.0.equipe.nom }}</strong> - {{ classement.0.score_total }} point{{ classement.2.score_total|pluralize }}{% else %}-{% endif %}</li>
-            <li><span style="font-size:1.5rem">🥈</span> {% if classement.1.score_total > 0 %}Équipe <strong>{{ classement.1.equipe.nom }}</strong> - {{ classement.1.score_total }} point{{ classement.2.score_total|pluralize }}{% else %}-{% endif %}</li>
-            <li><span style="font-size:1.5rem">🥉</span> {% if classement.2.score_total > 0 %}Équipe <strong>{{ classement.2.equipe.nom }}</strong> - {{ classement.2.score_total }} point{{ classement.2.score_total|pluralize }}{% else %}-{% endif %}</li>
+            <li><span style="font-size:1.5rem">🥇</span> {% if classement.0.score_total > 0 %}Équipe <strong>{{
+                    classement.0.equipe.nom }}</strong> - {{ classement.0.score_total }} point{{
+                classement.2.score_total|pluralize }}{% else %}-{% endif %}</li>
+            <li><span style="font-size:1.5rem">🥈</span> {% if classement.1.score_total > 0 %}Équipe <strong>{{
+                    classement.1.equipe.nom }}</strong> - {{ classement.1.score_total }} point{{
+                classement.2.score_total|pluralize }}{% else %}-{% endif %}</li>
+            <li><span style="font-size:1.5rem">🥉</span> {% if classement.2.score_total > 0 %}Équipe <strong>{{
+                    classement.2.equipe.nom }}</strong> - {{ classement.2.score_total }} point{{
+                classement.2.score_total|pluralize }}{% else %}-{% endif %}</li>
         </ul>
         {% else %}
-        <p>Les équipes ne peuvent pas encore être classées car aucune n'a proposé de réponse pour le moment ou aucune n'a de points.</p>
+        <p>Les équipes ne peuvent pas encore être classées car aucune n'a proposé de réponse pour le moment ou aucune
+            n'a de points.</p>
         {% endif %}
     </section>
     <hr>
@@ -351,13 +362,14 @@
             </thead>
             <tbody>
                 {% for resultat in classement %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><span class="code-reponse" data-tooltip="{{ resultat.equipe.nom }}">{{ resultat.equipe.nom }}</span></td>
-                        <td><strong>{{ resultat.score_total }}</strong></td>
-                        <td>{{ resultat.nb_partie2_resolue }}</td>
-                        <td>{{ resultat.temps_formate_derniere_reponse|default_if_none:"-" }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><span class="code-reponse" data-tooltip="{{ resultat.equipe.nom }}">{{ resultat.equipe.nom
+                            }}</span></td>
+                    <td><strong>{{ resultat.score_total }}</strong></td>
+                    <td>{{ resultat.nb_partie2_resolue }}</td>
+                    <td>{{ resultat.temps_formate_derniere_reponse|default_if_none:"-" }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -365,7 +377,7 @@
     {% else %}
     <p>Pas de classement pour l'instant car aucune équipe n'a remporté de points.</p>
     {% endif %}
-    
+
 </div>
 
 <div id="loading-spinner" style="text-align: center; margin:2rem auto;">
@@ -374,121 +386,100 @@
 
 
 <script>
-// document.getElementById('toggle-reponses').addEventListener('change', function(e) {
-//     const container = document.getElementById('resultats-container');
-//     if (this.checked) {
-//         container.classList.remove('reponses-masquees');
-//     } else {
-//         container.classList.add('reponses-masquees');
-//     }
-// });
-
-// document.getElementById('toggle-reponses-par-equipe').addEventListener('change', function(e) {
-//     const container = document.getElementById('resultats-par-equipe-container');
-//     if (this.checked) {
-//         container.classList.remove('reponses-masquees');
-//     } else {
-//         container.classList.add('reponses-masquees');
-//     }
-// });
-
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    // GESTION DE L'AFFICHAGE DES RESULTATS
-    // Fonction pour gérer l'état initial de 'toggle-reponses'
-    function gererToggleReponses() {
-        const basculeReponses = document.getElementById('toggle-reponses');
-        const conteneurResultats = document.getElementById('resultats-container');
-        if (basculeReponses.checked) {
-            conteneurResultats.classList.remove('reponses-masquees');
-        } else {
-            conteneurResultats.classList.add('reponses-masquees');
-        }
-    }
-
-    // Fonction pour gérer l'état initial de 'toggle-reponses-par-equipe'
-    function gererToggleReponsesParEquipe() {
-        const basculeReponsesParEquipe = document.getElementById('toggle-reponses-par-equipe');
-        const conteneurResultatsParEquipe = document.getElementById('resultats-par-equipe-container');
-        if (basculeReponsesParEquipe.checked) {
-            conteneurResultatsParEquipe.classList.remove('reponses-masquees');
-        } else {
-            conteneurResultatsParEquipe.classList.add('reponses-masquees');
-        }
-    }
-
-    // Appel des fonctions pour gérer l'état initial
-    gererToggleReponses();
-    gererToggleReponsesParEquipe();
-
-    // Ajout des écouteurs d'événements pour les changements d'état
-    document.getElementById('toggle-reponses').addEventListener('change', gererToggleReponses);
-    document.getElementById('toggle-reponses-par-equipe').addEventListener('change', gererToggleReponsesParEquipe);
-    
-    
-    
-    
-    
-    // GESTION DES BOUTONS ET DE L'AFFICHAGE DES DIFFERENTS ONGLETS
-
-    // Récupération des éléments
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
-    const loadingSpinner = document.querySelector('#loading-spinner');
-
-
-    // Fonction pour changer d'onglet
-    function switchTab(tabId) {
-        // Affiche l'indicateur de chargement
-        loadingSpinner.style.display = 'block';
-
-        // Désactive tous les onglets
-        tabButtons.forEach(button => {
-            button.classList.remove('tab-active');
-            button.classList.add('secondary');
-            button.classList.add('outline');
-        });
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-            content.classList.add('hidden');            
-        });
-
-        // Active l'onglet sélectionné après 0.5 secondes
-        setTimeout(() => {
-            const selectedButton = document.querySelector(`[data-tab="${tabId}"]`);
-            const selectedContent = document.getElementById(`${tabId}-container`);
-
-            if (selectedButton && selectedContent) {
-                selectedButton.classList.add('tab-active');
-                selectedButton.classList.remove('secondary');
-                selectedButton.classList.remove('outline');
-                selectedContent.classList.remove('hidden');
-                selectedContent.classList.add('active');
+    document.addEventListener('DOMContentLoaded', function () {
+        // GESTION DE L'AFFICHAGE DES RESULTATS
+        // Fonction pour gérer l'état initial de 'toggle-reponses'
+        function gererToggleReponses() {
+            const basculeReponses = document.getElementById('toggle-reponses');
+            const conteneurResultats = document.getElementById('resultats-container');
+            if (basculeReponses.checked) {
+                conteneurResultats.classList.remove('reponses-masquees');
+            } else {
+                conteneurResultats.classList.add('reponses-masquees');
             }
+        }
 
-            // Cache l'indicateur de chargement
-            loadingSpinner.style.display = 'none';
-        }, 400); // Durée de la transition
+        // Fonction pour gérer l'état initial de 'toggle-reponses-par-equipe'
+        function gererToggleReponsesParEquipe() {
+            const basculeReponsesParEquipe = document.getElementById('toggle-reponses-par-equipe');
+            const conteneurResultatsParEquipe = document.getElementById('resultats-par-equipe-container');
+            if (basculeReponsesParEquipe.checked) {
+                conteneurResultatsParEquipe.classList.remove('reponses-masquees');
+            } else {
+                conteneurResultatsParEquipe.classList.add('reponses-masquees');
+            }
+        }
 
-        // Stocke l'onglet actif dans le localStorage
-        localStorage.setItem('activeTab', tabId);
-    }
+        // Appel des fonctions pour gérer l'état initial
+        gererToggleReponses();
+        gererToggleReponsesParEquipe();
 
-    // Gestionnaire d'événements pour les boutons
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const tabId = this.getAttribute('data-tab');
-            switchTab(tabId);
+        // Ajout des écouteurs d'événements pour les changements d'état
+        document.getElementById('toggle-reponses').addEventListener('change', gererToggleReponses);
+        document.getElementById('toggle-reponses-par-equipe').addEventListener('change', gererToggleReponsesParEquipe);
+
+
+
+
+
+        // GESTION DES BOUTONS ET DE L'AFFICHAGE DES DIFFERENTS ONGLETS
+
+        // Récupération des éléments
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const loadingSpinner = document.querySelector('#loading-spinner');
+
+
+        // Fonction pour changer d'onglet
+        function switchTab(tabId) {
+            // Affiche l'indicateur de chargement
+            loadingSpinner.style.display = 'block';
+
+            // Désactive tous les onglets
+            tabButtons.forEach(button => {
+                button.classList.remove('tab-active');
+                button.classList.add('secondary');
+                button.classList.add('outline');
+            });
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                content.classList.add('hidden');
+            });
+
+            // Active l'onglet sélectionné après 0.5 secondes
+            setTimeout(() => {
+                const selectedButton = document.querySelector(`[data-tab="${tabId}"]`);
+                const selectedContent = document.getElementById(`${tabId}-container`);
+
+                if (selectedButton && selectedContent) {
+                    selectedButton.classList.add('tab-active');
+                    selectedButton.classList.remove('secondary');
+                    selectedButton.classList.remove('outline');
+                    selectedContent.classList.remove('hidden');
+                    selectedContent.classList.add('active');
+                }
+
+                // Cache l'indicateur de chargement
+                loadingSpinner.style.display = 'none';
+            }, 400); // Durée de la transition
+
+            // Stocke l'onglet actif dans le localStorage
+            localStorage.setItem('activeTab', tabId);
+        }
+
+        // Gestionnaire d'événements pour les boutons
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const tabId = this.getAttribute('data-tab');
+                switchTab(tabId);
+            });
         });
+
+        // Restaure l'onglet actif au chargement de la page
+        const activeTab = localStorage.getItem('activeTab') || 'resultats';
+        switchTab(activeTab);
+
     });
-
-    // Restaure l'onglet actif au chargement de la page
-    const activeTab = localStorage.getItem('activeTab') || 'resultats';
-    switchTab(activeTab);
-
-});
 </script>
 
 

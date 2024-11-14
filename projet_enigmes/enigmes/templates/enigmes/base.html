@@ -1,40 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr">
 {% load static %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
     <title>{% block title %}Énigmes{% endblock %}</title>
 
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pumpkin.min.css"
-    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pumpkin.min.css">
     <script src="https://unpkg.com/feather-icons"></script>
-
-    <!-- <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],
-                                displayMath: [ ['$$','$$'], ["\\[","\\]"] ]}});
-    </script> -->
-    <!-- <script type="text/javascript"
-        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script> -->
     <script>
         MathJax = {
-          tex: {
-            inlineMath: [['$', '$'], ['\\(', '\\)']]
-          }
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
         };
-        </script>
-    <script id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
     </script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap');
 
-        :root:not([data-theme=dark]), [data-theme=light] {
+        :root:not([data-theme=dark]),
+        [data-theme=light] {
             --pico-header-background: rgba(255, 255, 255, .8);
             --pico-header-border-color: transparent;
         }
@@ -53,20 +43,20 @@
             -webkit-backdrop-filter: blur(1rem);
             backdrop-filter: blur(1rem);
             background-color: var(--pico-header-background);
-            transition: border-top-color .4s ease-in-out,box-shadow .4s ease-in-out;
+            transition: border-top-color .4s ease-in-out, box-shadow .4s ease-in-out;
         }
 
         body>header.is-fixed-above-lg+main {
             --pico-main-top-offset: var(--pico-header-height);
         }
 
-        body > header .container {
+        body>header .container {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
         }
 
-        body > header .container #logo {
+        body>header .container #logo {
             width: 150px;
         }
 
@@ -78,50 +68,50 @@
         }
 
         @media (max-width: 768px) {
-            body > header .container {
+            body>header .container {
                 align-items: baseline;
             }
-            body > header .container #logo {
+
+            body>header .container #logo {
                 width: 120px;
                 min-width: 120px;
             }
         }
-        
+
 
         .alert {
-            /* margin: 1rem; */
             margin-bottom: 2rem;
             padding: 1rem;
             border-radius: 0.3rem;
-            border:1px solid transparent;
+            border: 1px solid transparent;
         }
 
-        .alert-success{
-            color:#3c763d;
-            background-color:#dff0d8;
-            border-color:#d6e9c6
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6
         }
 
-        .alert-success hr{
-            border-top-color:#c9e2b3
+        .alert-success hr {
+            border-top-color: #c9e2b3
         }
 
-        .alert-success .alert-link{
-            color:#2b542c
+        .alert-success .alert-link {
+            color: #2b542c
         }
 
-        .alert-info{
-            color:#31708f;
-            background-color:#d9edf7;
-            border-color:#bce8f1
+        .alert-info {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1
         }
 
-        .alert-info hr{
-            border-top-color:#a6e1ec
+        .alert-info hr {
+            border-top-color: #a6e1ec
         }
 
-        .alert-info .alert-link{
-            color:#245269
+        .alert-info .alert-link {
+            color: #245269
         }
 
         .alert-warning {
@@ -130,26 +120,26 @@
             border-color: #faebcc;
         }
 
-        .alert-warning hr{
-            border-top-color:#f7e1b5
+        .alert-warning hr {
+            border-top-color: #f7e1b5
         }
 
-        .alert-warning .alert-link{
-            color:#66512c
+        .alert-warning .alert-link {
+            color: #66512c
         }
 
-        .alert-danger{
-            color:#a94442;
-            background-color:#f2dede;
-            border-color:#ebccd1
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1
         }
 
-        .alert-danger hr{
-            border-top-color:#e4b9c0
+        .alert-danger hr {
+            border-top-color: #e4b9c0
         }
 
-        .alert-danger .alert-link{
-            color:#843534
+        .alert-danger .alert-link {
+            color: #843534
         }
 
         .errorlist {
@@ -163,118 +153,126 @@
 
 
         /* Style de base */
-header {
-    position: relative;
-}
+        header {
+            position: relative;
+        }
 
-/* Cacher le menu par défaut sur les petits écrans */
-#navigation-menu {
-    display: flex; /* Affichage par défaut */
-}
+        /* Cacher le menu par défaut sur les petits écrans */
+        #navigation-menu {
+            display: flex;
+            /* Affichage par défaut */
+        }
 
-#burger-menu {
-    display: none; /* Masqué par défaut */
-}
+        #burger-menu {
+            display: none;
+            /* Masqué par défaut */
+        }
 
-/* Masquer le checkbox */
-.menu-toggle {
-    display: none;
-}
+        /* Masquer le checkbox */
+        .menu-toggle {
+            display: none;
+        }
 
-#burger-icon, #close-icon {
-    display: none;
-}
+        #burger-icon,
+        #close-icon {
+            display: none;
+        }
 
 
 
-/* Styles pour les petits écrans */
-@media (max-width: 768px) {
+        /* Styles pour les petits écrans */
+        @media (max-width: 768px) {
 
-    /* Affiche le bouton burger et cache le menu par défaut */
-    #burger-menu {
-        display: block;
-        font-size: 1.5rem;
-        cursor: pointer;
-    }
-    
-    #navigation-menu {
-        display: none; /* Cacher le menu sur petits écrans */
-        flex-direction: column; /* Empile les éléments du menu verticalement */
-        position: absolute;
-        top: 100%; /* Juste en dessous du header */
-        left: 0;
-        right: 0;
-        background-color: white; /* Couleur de fond pour contraster */
-        border-top: 1px solid #ccc;
-    }
+            /* Affiche le bouton burger et cache le menu par défaut */
+            #burger-menu {
+                display: block;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
 
-    #navigation-menu ul {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        flex-direction: column;
-        border-bottom: 1px solid #ccc;
-    }
+            #navigation-menu {
+                display: none;
+                /* Cacher le menu sur petits écrans */
+                flex-direction: column;
+                /* Empile les éléments du menu verticalement */
+                position: absolute;
+                top: 100%;
+                /* Juste en dessous du header */
+                left: 0;
+                right: 0;
+                background-color: white;
+                /* Couleur de fond pour contraster */
+                border-top: 1px solid #ccc;
+            }
 
-    #navigation-menu li {
-        padding: 10px;
-        text-align: center;
-    }
+            #navigation-menu ul {
+                padding: 0;
+                margin: 0;
+                list-style: none;
+                flex-direction: column;
+                border-bottom: 1px solid #ccc;
+            }
 
-    /* Affiche le menu si le checkbox est coché */
-    .menu-toggle:checked ~ #navigation-menu {
-        display: flex;
-    }
+            #navigation-menu li {
+                padding: 10px;
+                text-align: center;
+            }
 
-        /* Afficher l'icône de menu ouvert (☰) quand le menu est fermé (case décochée) */
-    .menu-toggle:not(:checked) ~ #burger-menu #burger-icon {
-        display: inline;
-    }
+            /* Affiche le menu si le checkbox est coché */
+            .menu-toggle:checked~#navigation-menu {
+                display: flex;
+            }
 
-    /* Afficher l'icône de menu fermé (✖) quand le menu est ouvert (case cochée) */
-    .menu-toggle:checked ~ #burger-menu #close-icon {
-        display: inline;
-    }
-}
+            /* Afficher l'icône de menu ouvert (☰) quand le menu est fermé (case décochée) */
+            .menu-toggle:not(:checked)~#burger-menu #burger-icon {
+                display: inline;
+            }
 
-/* Assure que l'html et le body occupent toute la hauteur de la fenêtre */
-html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
+            /* Afficher l'icône de menu fermé (✖) quand le menu est ouvert (case cochée) */
+            .menu-toggle:checked~#burger-menu #close-icon {
+                display: inline;
+            }
+        }
 
-    /* Définit le body pour utiliser Flexbox en colonne */
-    body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
+        /* Assure que l'html et le body occupent toute la hauteur de la fenêtre */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-    body > footer {
-        margin-top: auto;
-    }
+        /* Définit le body pour utiliser Flexbox en colonne */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    span.protection{
-        display: none;
-    }
+        body>footer {
+            margin-top: auto;
+        }
 
-    img#info {
-        margin-bottom: 0.5rem;
-    }
+        span.protection {
+            display: none;
+        }
 
-    .infos-appli {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 0.5rem auto;
-    }
+        img#info {
+            margin-bottom: 0.5rem;
+        }
 
+        .infos-appli {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem auto;
+        }
     </style>
-    
+
     {% block extra_css %}{% endblock %}
     {% block extra_js %}{% endblock %}
 </head>
+
 <body>
     <header class="is-fixed-above-lg">
         <div class="container">
@@ -294,7 +292,7 @@ html, body {
                     <i data-feather="x"></i>
                 </span>
             </label>
-            
+
 
             <nav id="navigation-menu">
                 <ul>
@@ -328,9 +326,9 @@ html, body {
                 </ul>
             </nav>
         </div>
-        
+
     </header>
-    
+
 
     <main class="container">
         {% if messages %}
@@ -338,18 +336,18 @@ html, body {
             <div class="messages-container">
                 {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">
-                {{ message }}
+                    {{ message }}
                 </div>
                 {% endfor %}
             </div>
         </div>
         {% endif %}
-    
-        
+
+
         {% block content %}{% endblock %}
 
     </main>
-    
+
     <footer>
         <div class="container">
             <hr>
@@ -362,7 +360,15 @@ html, body {
                     </div>
                     <div class="infos-appli">
                         <i data-feather="at-sign"></i>
-                        <small><span class="protection">mlkf,zekvorz</span>co<span class="protection">klfnzorjnvjrz lv</span>nta<span class="protection">ofhbrzornvp</span>ct.in<span class="protection">:;eude!ùeki</span>fo<span class="protection">oifzeuogvnzr</span>nigm<span class="protection">^pez,fovbznp</span>a@<span class="protection">:;;deopifzei*</span>gm<span class="protection">nfzoepfierzovze;</span>ai<span class="protection">^ùdùd;ecenvekj</span>l.c<span class="protection">klczdlv ldz,vkl</span>om<span class="protection">fezfkzep!%d,vkl</span></small>
+                        <small><span class="protection">mlkf,zekvorz</span>co<span class="protection">klfnzorjnvjrz
+                                lv</span>nta<span class="protection">ofhbrzornvp</span>ct.in<span
+                                class="protection">:;eude!ùeki</span>fo<span
+                                class="protection">oifzeuogvnzr</span>nigm<span
+                                class="protection">^pez,fovbznp</span>a@<span
+                                class="protection">:;;deopifzei*</span>gm<span
+                                class="protection">nfzoepfierzovze;</span>ai<span
+                                class="protection">^ùdùd;ecenvekj</span>l.c<span class="protection">klczdlv
+                                ldz,vkl</span>om<span class="protection">fezfkzep!%d,vkl</span></small>
                     </div>
                     <div class="infos-appli">
                         <i data-feather="code"></i>
@@ -372,13 +378,14 @@ html, body {
                 <nav class="grid">
                     <ul>
                         <li><small><a href="{% url 'cgu' %}">Conditions générales d'utilisation</a></small></li>
-                        <li><small><a href="{% url 'politique_confidentialite' %}">Politique de confidentialité</a></small></li>
+                        <li><small><a href="{% url 'politique_confidentialite' %}">Politique de
+                                    confidentialité</a></small></li>
                     </ul>
                 </nav>
-            </section>                        
+            </section>
         </div>
     </footer>
-    
+
 
     <script>
         // pour les icones
@@ -386,12 +393,12 @@ html, body {
     </script>
     <script>
         // pour le style du header
-        
+
         // Sélectionne l'élément header
         const header = document.querySelector('body > header');
 
         // Ajoute un gestionnaire d'événement pour le défilement
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             if (window.scrollY > 0) {
                 // Si on scrolle vers le bas, ajoute la classe is-fixed
                 header.classList.add('is-fixed');
@@ -402,6 +409,7 @@ html, body {
         });
 
     </script>
-        
+
 </body>
+
 </html>

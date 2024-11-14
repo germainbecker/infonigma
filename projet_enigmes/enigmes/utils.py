@@ -1,7 +1,5 @@
 from pathlib import Path
 from django.conf import settings
-from django.shortcuts import render
-import markdown2
 import re
 import markdown
 

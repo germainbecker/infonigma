@@ -22,17 +22,14 @@ from .decorators import equipe_requise
 
 from .utils import render_markdown_file
 
-from wsgiref.util import FileWrapper
+
 from io import BytesIO
-from pathlib import Path
 import unicodedata
 import os
 import zipfile
-import re
 
-# def accueil(request):
-#     return render(request, 'enigmes/accueil.html')
 
+#### ANNEXES ####
 
 def a_propos(request):
     return render(request, 'enigmes/a_propos.html')
@@ -137,7 +134,6 @@ def utilisateur_a_acces_enigme(user, enigme_id):
             return False
         
         # Vérifier si l'énigme fait partie des énigmes de la classe
-        print(enigme_id, equipe.classe.enigmes.filter(id=enigme_id))
         return equipe.classe.enigmes.filter(id=enigme_id).exists()
         
     except Equipe.DoesNotExist:
@@ -259,31 +255,6 @@ class ClasseDeleteView(LoginRequiredMixin, DeleteView):
         
         return response
     
-    # def delete(self, request, *args, **kwargs):
-    #     # Récupérer l'objet avant suppression
-    #     self.object = self.get_object()
-        
-    #     # Nom de la classe avant suppression
-    #     nom_classe = self.object.nom
-    #     # Nombre d'équipes avant suppression
-    #     nb_equipes = self.object.equipe_set.count()
-        
-    #     # Supprimer toutes les équipes associées (fait à la suppression de la classe)
-    #     # self.object.equipe_set.all().delete()
-        
-    #     # Supprimer la classe (et toutes les équipes associées grace à on_delete=models.CASCADE)
-    #     success_url = self.get_success_url()
-    #     self.object.delete()
-        
-    #     # Ajouter un message de confirmation avec le nombre d'équipes supprimées
-    #     messages.success(request, 
-    #         f"La classe {nom_classe} a été supprimée avec succès. "
-    #         f"{nb_equipes} équipe(s) ont été supprimées en même temps."
-    #     )
-    #     print('ici')
-        
-    #     return HttpResponseRedirect(success_url)
-
 
 @login_required
 def liste_classes(request):
@@ -379,8 +350,6 @@ def creer_ou_reprendre_equipe(request, code_classe):
     
     classe = Classe.objects.get(code=code_classe)
 
-    
-    
     if request.method == "POST":
         form = FormulaireEquipe(request.POST)
         if form.is_valid():
@@ -412,7 +381,6 @@ def creer_ou_reprendre_equipe(request, code_classe):
                 # Stocker l'équipe dans la session
                 request.session['equipe_id'] = equipe.id
                 return render(request, 'enigmes/equipe_creee.html', {'equipe': equipe, 'code_equipe': code_equipe})
-    
     else:
         form = FormulaireEquipe()
 
@@ -421,7 +389,6 @@ def creer_ou_reprendre_equipe(request, code_classe):
 
 def reprendre_equipe(request):
     if 'equipe_id' in request.session:
-        print(request.session.get('equipe_id'))
         equipe = Equipe.objects.get(id=request.session['equipe_id'])
         if not equipe.classe.est_active:
             messages.warning(request, "Le concours n'est plus actif. Vous ne pouvez plus consulter ou répondre aux énigmes.")
@@ -439,18 +406,7 @@ def reprendre_equipe(request):
                     messages.warning(request, "Le concours n'est plus actif. Vous ne pouvez plus consulter ou répondre aux énigmes.")
                 return redirect('liste_enigmes_classe')
             except Equipe.DoesNotExist:
-                form.add_error('code_equipe', "Aucune équipe trouvée avec ce code.")
-            # code_equipe = form.cleaned_data['code_equipe']
-            
-            # if code_equipe:
-            #     # Reprendre une équipe existante
-            #     try:
-            #         equipe = Equipe.objects.get(code_equipe=code_equipe, classe=classe)
-            #         # Stocker l'équipe dans la session
-            #         request.session['equipe_id'] = equipe.id
-            #         return redirect('liste_enigmes_classe')
-            #     except Equipe.DoesNotExist:
-            #         form.add_error('code_equipe', "Aucune équipe trouvée avec ce code.")    
+                form.add_error('code_equipe', "Aucune équipe trouvée avec ce code.")    
     else:
         form = FormulaireRepriseEquipe()
 
@@ -479,7 +435,6 @@ def liste_enigmes_classe(request):
     
     # Récupérer les progrès de l'équipe
     progression = ProgressionEquipe.objects.filter(equipe=equipe)
-    # enigmes_resolues = [p.enigme for p in progression if p.partie2_resolue]
 
     # Créer un dictionnaire pour stocker les informations de progression pour chaque énigme
     progression_dict = {
@@ -496,12 +451,9 @@ def liste_enigmes_classe(request):
         'classe_est_active': classe_est_active,
         'enigmes': enigmes,
         'equipe': equipe,
-        # 'enigmes_resolues': enigmes_resolues,
         'progression_dict': progression_dict
     })
     
-    # return render(request, 'enigmes/liste_enigmes_classe.html', {'enigmes': enigmes, 'equipe': equipe, 'enigmes_resolues': enigmes_resolues})
-
 
 def normaliser_chaine(chaine):
     # # Supprimer les espaces
@@ -533,7 +485,6 @@ def resoudre_enigme(request, enigme_id):
         # Rediriger vers l'accueil si l'équipe n'est pas dans la session
         return redirect('demarrer_concours')
     
-
     equipe = get_object_or_404(Equipe, id=equipe_id)
     
     # Si la classe n'est pas active, on redirige avec HX-Redirect pour les requêtes HTMX
@@ -563,7 +514,6 @@ def resoudre_enigme(request, enigme_id):
         })
 
     
-
     # Gestion de la soumission des formulaires
     if request.method == "POST":
         if 'code_partie1' in request.POST:
@@ -577,17 +527,6 @@ def resoudre_enigme(request, enigme_id):
                     progression.code_partie1 = code_partie1
                     progression.date_reponse_partie1 = timezone.now()
                     progression.save()
-
-                    # # Afficher le formulaire de la partie 2
-                    # form2 = FormulairePartie2()
-                    # enigme_partie2_markdown = render_markdown_file(enigme.partie2_markdown_path)
-                    # return render(request, 'enigmes/resoudre_enigme.html', {
-                    #     'enigme': enigme, 
-                    #     'form2': form2, 
-                    #     'equipe': equipe, 
-                    #     'partie1_resolue': True,
-                    #     'enigme_partie2_markdown' : enigme_partie2_markdown,
-                    # }, status=200)
 
                     # Retourner le fragment HTML pour la partie 2
                     form2 = FormulairePartie2()
@@ -604,14 +543,6 @@ def resoudre_enigme(request, enigme_id):
                     return response
 
                 else:
-                    # # Afficher un message d'erreur si le code est incorrect
-                    # return render(request, 'enigmes/resoudre_enigme.html', {
-                    #     'enigme': enigme, 
-                    #     'form1': form1, 
-                    #     'equipe': equipe, 
-                    #     'error': "Le code est incorrect."
-                    # })
-
                     progression.code_partie1 = code_partie1
                     progression.date_reponse_partie1 = timezone.now()
                     progression.save()
@@ -862,14 +793,9 @@ def voir_reponses_classe(request, code_classe):
         )
     )
 
-    print(classement)
-
     # Si aucune équipe n'a de points
     if classement == [] or classement[0]['score_total'] == 0:
         classement = None
-    
-    # # Trier les équipes par score total décroissant
-    # resultats_par_equipe.sort(key=lambda x: x['score_total'], reverse=True)
 
     context = {
         'classe': classe,
@@ -895,7 +821,6 @@ def apercu_enigme(request, enigme_id):
     enigme_partie2_markdown = render_markdown_file(enigme.partie2_markdown_path)
     return render(request, 'enigmes/apercu_enigme.html', {
         'enigme': enigme,
-        # 'numero_enigme_en_cours': numero_enigme_en_cours,
         'enigmes': enigmes,
         'enigme_partie2_markdown': enigme_partie2_markdown,
     })

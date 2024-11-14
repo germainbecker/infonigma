@@ -56,37 +56,3 @@ class Command(BaseCommand):
                 f'Import terminé avec succès: {enigmes_created} énigmes créées, {enigmes_updated} énigmes mises à jour'
             )
         )
-
-# import json
-# from django.core.management.base import BaseCommand
-# from enigmes.models import Enigme
-
-# class Command(BaseCommand):
-#     help = 'Charge les énigmes depuis le fichier de configuration JSON'
-
-#     def handle(self, *args, **options):
-#         try:
-#             with open('enigmes_config.json', 'r', encoding='utf-8') as config_file:
-#                 config = json.load(config_file)
-
-#             for enigme_data in config['enigmes']:
-#                 enigme, created = Enigme.objects.update_or_create(
-#                     numero=enigme_data['numero'],
-#                     defaults={
-#                         'titre': enigme_data['titre'],
-#                         'a_un_complement_pdf': enigme_data['a_un_complement_pdf']
-#                     }
-#                 )
-#                 if created:
-#                     self.stdout.write(self.style.SUCCESS(f'Énigme créée : {enigme.titre}'))
-#                 else:
-#                     self.stdout.write(self.style.SUCCESS(f'Énigme mise à jour : {enigme.titre}'))
-
-#             self.stdout.write(self.style.SUCCESS('Chargement des énigmes terminé'))
-        
-#         except UnicodeDecodeError:
-#             self.stdout.write(self.style.ERROR('Erreur de décodage UTF-8. Assurez-vous que le fichier JSON est encodé en UTF-8.'))
-#         except json.JSONDecodeError:
-#             self.stdout.write(self.style.ERROR('Erreur de parsing JSON. Vérifiez le format de votre fichier JSON.'))
-#         except Exception as e:
-#             self.stdout.write(self.style.ERROR(f'Une erreur est survenue : {str(e)}'))

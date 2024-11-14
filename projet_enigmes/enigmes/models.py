@@ -4,30 +4,13 @@ from django.conf import settings
 from comptes.models import Enseignant
 
 from pathlib import Path
-
 import os
 import string
 import random
 
-# class Enigme(models.Model):
-#     titre = models.CharField(max_length=200)
-#     partie1_pdf = models.FileField(upload_to='enigmes/pdfs/')
-#     partie2_markdown = models.TextField()
-#     code_partie1 = models.CharField(max_length=50)
-#     code_partie2 = models.CharField(max_length=50)
 
 
 class Enigme(models.Model):
-    # ENIGME_CHOICES = [
-    #     ('01', 'Énigme 1'),
-    #     ('02', 'Énigme 2'),
-    #     ('03', 'Énigme 3'),
-    #     ('04', 'Énigme 4'),
-    #     ('05', 'Énigme 5'),
-    #     ('06', 'Énigme 6'),
-    # ]
-
-    # numero = models.CharField(max_length=2, choices=ENIGME_CHOICES, primary_key=True)
     titre = models.CharField(max_length=200)
     a_un_complement_pdf = models.BooleanField(default=False)
     titre_complement = models.CharField(max_length=200,blank=True, null=True)
@@ -42,7 +25,6 @@ class Enigme(models.Model):
         repertoire = Path(settings.PROTECTED_FILES_ROOT)
         return repertoire / 'pdfs' / f'enigme_{self.pk}.pdf'
         
-        return f'enigmes/pdfs/enigme_{self.pk}.pdf'
     
     @property
     def nom_fichier_partie1_pdf(self):
@@ -53,7 +35,6 @@ class Enigme(models.Model):
         if self.a_un_complement_pdf:
             repertoire = Path(settings.PROTECTED_FILES_ROOT)
             return repertoire / 'pdfs' / f'enigme_{self.pk}_complementaire.pdf'
-            return f'enigmes/pdfs/enigme_{self.pk}_complementaire.pdf'
         return None
     
     @property
@@ -64,35 +45,9 @@ class Enigme(models.Model):
     
     @property
     def partie2_markdown_path(self):
-        # return f'enigmes/markdown/enigme_{self.pk}_partie2.md'
         repertoire = Path(settings.PROTECTED_FILES_ROOT)
         return repertoire / 'markdown' / f'enigme_{self.pk}_partie2.md'
-        return os.path.join(settings.PROTECTED_FILES_ROOT, 'markdown', f'enigme_{self.pk}_partie2.md')
 
-
-    # @property
-    # def code_partie1(self):
-    #     codes = {
-    #         '01': 'CODE1_E1',
-    #         '02': 'CODE1_E2',
-    #         '03': 'CODE1_E3',
-    #         '04': 'CODE1_E4',
-    #         '05': 'CODE1_E5',
-    #         '06': 'CODE1_E6',
-    #     }
-    #     return codes.get(self.numero)
-
-    # @property
-    # def code_partie2(self):
-    #     codes = {
-    #         '01': 'CODE2_E1',
-    #         '02': 'CODE2_E2',
-    #         '03': 'CODE2_E3',
-    #         '04': 'CODE2_E4',
-    #         '05': 'CODE2_E5',
-    #         '06': 'CODE2_E6',
-    #     }
-    #     return codes.get(self.numero)
 
 class Classe(models.Model):
     nom = models.CharField(max_length=100)

@@ -76,7 +76,6 @@ class FormulaireRepriseEquipe(forms.Form):
                 
         # Vérifier si le code d'équipe existe déjà
         if code_equipe:
-            print(code_equipe)
             if not Equipe.objects.filter(code_equipe=code_equipe).exists():
                 raise forms.ValidationError("Ce code ne correspond à aucune équipe pour ce concours.")
         else:

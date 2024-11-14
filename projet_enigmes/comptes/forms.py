@@ -1,8 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, AuthenticationForm
-from django.forms import widgets
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
 from django.conf import settings
 
 from .models import Enseignant
