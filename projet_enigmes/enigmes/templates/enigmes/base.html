@@ -13,14 +13,23 @@
     >
     <script src="https://unpkg.com/feather-icons"></script>
 
-    <script type="text/x-mathjax-config">
+    <!-- <script type="text/x-mathjax-config">
         MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],
                                 displayMath: [ ['$$','$$'], ["\\[","\\]"] ]}});
-    </script>
-    <script type="text/javascript"
+    </script> -->
+    <!-- <script type="text/javascript"
         src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script> -->
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+        </script>
+    <script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
     </script>
-    
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap');

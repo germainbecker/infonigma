@@ -773,6 +773,15 @@ div#content blockquote {
     // Ajoute un gestionnaire d'événement pour le défilement
     window.addEventListener('scroll', handleScroll);
 
+
+    // Détecte l'événement HTMX "afterSettle" pour re-rendre les maths avec MathJax
+    document.body.addEventListener("htmx:afterSettle", function(event) {
+        if (window.MathJax) {
+            MathJax.typeset(); // Re-rendu des mathématiques
+            console.log("rendu MathJax");
+        }
+    });
+
 </script>
   
     
