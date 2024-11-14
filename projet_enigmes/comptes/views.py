@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.forms import PasswordResetForm
@@ -80,22 +80,6 @@ def deconnexion_enseignant(request):
     logout(request)
     return redirect('demarrer_concours')
 
-# def reinitialisation_mot_de_passe(request):
-#     if request.method == 'POST':
-#         formulaire = FormulaireReinitialisationMotDePasse(request.POST)
-#         if formulaire.is_valid():
-#             formulaire.save(
-#                 request=request,
-#                 use_https=request.is_secure(),
-#                 subject_template_name='Réinitialisation du mot de passe',
-#                 email_template_name='comptes/reinitialisation_mot_de_passe_email.html',
-#                 from_email=settings.DEFAULT_FROM_EMAIL,
-#             )
-#             return render(request, 'comptes/reinitialisation_mot_de_passe_envoyee.html')
-#     else:
-#         formulaire = FormulaireReinitialisationMotDePasse()
-#     return render(request, 'comptes/reinitialisation_mot_de_passe.html', {'formulaire': formulaire})
-
 def reinitialisation_mot_de_passe(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
@@ -127,9 +111,5 @@ def reinitialisation_mot_de_passe(request):
         form = PasswordResetForm()
     return render(request, 'comptes/reinitialisation_mot_de_passe.html', {'form': form})
 
-@login_required
-def mon_compte(request):
-    enseignant = request.user
-    return render(request, 'comptes/mon_compte.html', {'enseignant': enseignant})
 
 

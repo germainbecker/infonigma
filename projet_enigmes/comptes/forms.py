@@ -2,9 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, AuthenticationForm
 from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-from django.urls import reverse
 from django.conf import settings
 
 from .models import Enseignant
@@ -57,13 +55,11 @@ def adresse_email_valide(adresse: str) -> bool:
     """Renvoie True si et seulement si adresse est une adresse e-mail valide"""
     academie = adresse.split('@')[1]
     return academie in LISTE_ADRESSES_CORRECTES or adresse in LISTE_ADRESSES_EXCEPTIONS
-    # return academie in LISTE_ADRESSES_CORRECTES
 
 
 class FormulaireInscriptionEnseignant(UserCreationForm):
     accepte_cgu = forms.BooleanField(
         required=True,
-        # label=f"J'accepte les <a href='{reverse('cgu')}' target='_blank'>conditions générales d'utilisation</a>",
         error_messages={
             'required': "Vous devez accepter les conditions générales d'utilisation pour vous inscrire."
         },
@@ -107,23 +103,4 @@ class FormulaireConnexionEnseignant(AuthenticationForm):
 class EmailForm(forms.Form):
     sujet = forms.CharField(label='Sujet', max_length=100)
     message = forms.CharField(label='Message', widget=forms.Textarea)
-
-# class FormulaireConnexionEnseignant(AuthenticationForm):
-#     # email = forms.EmailField(widget=forms.EmailInput(attrs={'autofocus': True}))
-
-#     def clean(self):
-#         email = self.cleaned_data.get('username')  # ATTENTION, c'est bien username
-#         password = self.cleaned_data.get('password')
-#         print(email, password)
-#         if email and password:
-#             self.user_cache = authenticate(self.request, username=email, password=password)
-#             if self.user_cache is None:
-#                 raise ValidationError("Email ou mot de passe incorrect.")
-#             elif not self.user_cache.is_active:
-#                 raise ValidationError("Ce compte n'est pas actif. Pour l'activer, vous devez cliquer sur le lien qui vous a été envoyé par email.")
-#         return self.cleaned_data
-
-    # def confirm_login_allowed(self, user):
-    #     if not user.is_active:
-    #         raise ValidationError("Ce compte n'est pas actif. Veuillez vérifier votre email pour l'activation.")
 

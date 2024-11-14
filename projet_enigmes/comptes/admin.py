@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail, EmailMessage
+from django.shortcuts import render
+from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
 from django.conf import settings
 
@@ -99,5 +99,5 @@ class EnseignantAdmin(UserAdmin):
 
 
 
-# Enregistrez le modèle et son administration personnalisée
+# Enregistrer le modèle et son administration personnalisée
 admin.site.register(Enseignant, EnseignantAdmin)

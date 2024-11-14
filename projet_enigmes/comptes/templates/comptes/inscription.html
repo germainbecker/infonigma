@@ -6,10 +6,10 @@
         cursor: initial;
         font-size: 0.9rem;
     }
+
     .submit-button {
         margin-top: 1rem;
     }
-
 </style>
 {% endblock %}
 
@@ -20,82 +20,85 @@
 <div class="container">
     <article style="max-width:800px;display:block;margin-left:auto;margin-right:auto;">
         <h1>Inscription Enseignant</h1>
-        <p>Si vous êtes enseignant, vous pouvez créer un compte en remplissant le formulaire ci-dessous. Seules les adresses email académiques ou de l'AEFE sont acceptées.</p>
+        <p>Si vous êtes enseignant, vous pouvez créer un compte en remplissant le formulaire ci-dessous. Seules les
+            adresses email académiques ou de l'AEFE sont acceptées.</p>
         <form method="post">
             {% csrf_token %}
             <div>
                 {{ formulaire.nom.label_tag}}
                 {{ formulaire.nom }}
                 {% if formulaire.nom.help_text %}
-                    <small class="helptext">{{ formulaire.nom.help_text }}</small>
+                <small class="helptext">{{ formulaire.nom.help_text }}</small>
                 {% endif %}
                 {% if formulaire.nom.errors %}
-                    <div class="text-danger">
-                        {{ formulaire.nom.errors }}
-                    </div>
+                <div class="text-danger">
+                    {{ formulaire.nom.errors }}
+                </div>
                 {% endif %}
             </div>
             <div>
                 {{ formulaire.prenom.label_tag}}
                 {{ formulaire.prenom }}
                 {% if formulaire.prenom.help_text %}
-                    <small class="helptext">{{ formulaire.prenom.help_text }}</small>
+                <small class="helptext">{{ formulaire.prenom.help_text }}</small>
                 {% endif %}
                 {% if formulaire.prenom.errors %}
-                    <div class="text-danger">
-                        {{ formulaire.prenom.errors }}
-                    </div>
+                <div class="text-danger">
+                    {{ formulaire.prenom.errors }}
+                </div>
                 {% endif %}
             </div>
             <div>
                 {{ formulaire.email.label_tag}}
                 {{ formulaire.email }}
                 {% if formulaire.email.help_text %}
-                    <small class="helptext">{{ formulaire.email.help_text }}</small>
+                <small class="helptext">{{ formulaire.email.help_text }}</small>
                 {% endif %}
                 {% if formulaire.email.errors %}
-                    <div class="text-danger">
-                        {{ formulaire.email.errors }}
-                    </div>
+                <div class="text-danger">
+                    {{ formulaire.email.errors }}
+                </div>
                 {% endif %}
             </div>
             <div>
                 {{ formulaire.password1.label_tag }}
                 {{ formulaire.password1 }}
                 {% if formulaire.password1.help_text %}
-                    <small class="helptext">{{ formulaire.password1.help_text }}</small>
+                <small class="helptext">{{ formulaire.password1.help_text }}</small>
                 {% endif %}
                 {% if formulaire.password1.errors %}
-                    <div class="text-danger">
-                        {{ formulaire.password1.errors }}
-                    </div>
+                <div class="text-danger">
+                    {{ formulaire.password1.errors }}
+                </div>
                 {% endif %}
             </div>
             <div>
                 {{ formulaire.password2.label_tag }}
                 {{ formulaire.password2 }}
                 {% if formulaire.password2.help_text %}
-                    <small class="helptext">{{ formulaire.password2.help_text }}</small>
+                <small class="helptext">{{ formulaire.password2.help_text }}</small>
                 {% endif %}
                 {% if formulaire.password2.errors %}
-                    <div class="text-danger">
-                        {{ formulaire.password2.errors }}
-                    </div>
+                <div class="text-danger">
+                    {{ formulaire.password2.errors }}
+                </div>
                 {% endif %}
             </div>
             <div>
                 <label class="label-cgu">
                     {{ formulaire.accepte_cgu }}
-                    <span>En vous inscrivant, vous acceptez les <a href="{% url 'cgu' %}" target="_blank">conditions générales d'utilisation</a> et la <a href="{% url 'politique_confidentialite' %}" target="_blank">politique de confidentialité</a></span>
+                    <span>En vous inscrivant, vous acceptez les <a href="{% url 'cgu' %}" target="_blank">conditions
+                            générales d'utilisation</a> et la <a href="{% url 'politique_confidentialite' %}"
+                            target="_blank">politique de confidentialité</a></span>
                 </label>
-                
+
                 {% if formulaire.accepte_cgu.help_text %}
-                    <small class="helptext">{{ formulaire.accepte_cgu.help_text }}</small>
+                <small class="helptext">{{ formulaire.accepte_cgu.help_text }}</small>
                 {% endif %}
                 {% if formulaire.accepte_cgu.errors %}
-                    <div class="text-danger">
-                        {{ formulaire.accepte_cgu.errors }}
-                    </div>
+                <div class="text-danger">
+                    {{ formulaire.accepte_cgu.errors }}
+                </div>
                 {% endif %}
             </div>
             <button class="submit-button" type="submit">S'inscrire</button>

@@ -2,8 +2,7 @@
 
 {% block title %}Connexion{% endblock %}
 
-{% block content %}
-
+{% block extra_css %}
 <style>
     .centre {
         display: block;
@@ -11,7 +10,9 @@
         margin-right: auto;
     }
 </style>
+{% endblock %}
 
+{% block content %}
 <div class="container">
     <article class="centre" style="max-width: 600px;">
         <form method="post">
@@ -21,9 +22,8 @@
             <button type="submit">Se connecter</button>
         </form>
         <p><small>Pas encore de compte ? <a href="{% url 'inscription_enseignant' %}">Créer un compte</a></small>
-        <br><small><a href="{% url 'reinitialisation_mot_de_passe' %}">Mot de passe oublié ?</a></small></p>
+            <br><small><a href="{% url 'reinitialisation_mot_de_passe' %}">Mot de passe oublié ?</a></small>
+        </p>
     </article>
 </div>
-
-
 {% endblock %}
