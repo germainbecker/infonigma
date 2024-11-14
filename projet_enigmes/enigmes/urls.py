@@ -27,7 +27,8 @@ urlpatterns = [
     # path('enigme/<str:enigme_id>/', views.detail_enigme, name='detail_enigme'),
     path('enigme/apercu/<str:enigme_id>/', views.apercu_enigme, name='apercu_enigme'),
     path('enigmes/telecharger-ressources/', TelechargerEnigmesZipView.as_view(), name='telecharger_ressources'),
-    
+    path('enigmes/telecharger-reponses/', views.telecharger_reponses_enigmes, name='telecharger_reponses_enigmes'),
+
     path('', views.demarrer_concours, name='demarrer_concours'),
     # path('concours/<int:classe_id>/equipe/', views.creer_ou_reprendre_equipe, name='creer_ou_reprendre_equipe'),
     path('concours/<str:code_classe>/equipe/', views.creer_ou_reprendre_equipe, name='creer_ou_reprendre_equipe'),

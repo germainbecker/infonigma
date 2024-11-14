@@ -949,3 +949,28 @@ class TelechargerEnigmesZipView(LoginRequiredMixin, View):
                 status=500
             )
 
+@login_required
+def telecharger_reponses_enigmes(request):
+    # Nom du fichier à servir
+    nom_fichier = 'reponses_enigmes.pdf'
+
+    # Construire le chemin complet en utilisant les paramètres
+    chemin_complet = os.path.join(
+        settings.PROTECTED_FILES_ROOT,
+        nom_fichier
+    )
+
+    # Vérifier que le chemin est sécurisé
+    if not est_chemin_securise(chemin_complet):
+        raise Http404("Chemin de fichier non autorisé")
+
+    # Vérifier que le fichier existe
+    if not os.path.exists(chemin_complet):
+        raise Http404("Fichier non trouvé")
+
+    try:
+        response = FileResponse(open(chemin_complet, 'rb'), content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{nom_fichier}"'
+        return response
+    except FileNotFoundError:
+        raise Http404("Fichier non trouvé")

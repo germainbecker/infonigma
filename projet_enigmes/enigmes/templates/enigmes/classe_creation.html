@@ -16,7 +16,7 @@
 
 <div class="container">
     <h1>Créer une nouvelle classe</h1>
-    <p>Les énoncés des différentes énigmes sont accessibles via l'onglet "Énigmes".</p>
+    <p>Les énoncés des différentes énigmes sont accessibles via l'onglet "Énigmes" ou directement en cliquant sur ce lien : <a href="{% url 'liste_enigmes' %}">voir les énigmes</a>.</p>
     <form method="post">
         {% csrf_token %}
         {{ form.as_div }}

@@ -1,34 +1,87 @@
 {% extends 'enigmes/base.html' %}
 
+{% block extra_css %}
+<style>
+    section:not(:nth-of-type(1)) {
+        margin-top: 2rem;
+    }
+    section:not(:last-of-type) {
+        margin-bottom: 2rem;
+    }
+</style>
+
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
-    <h1>Les énigmes</h1>
+    <section>
+        <h1>Les énigmes</h1>
 
-    <p><strong>Chaque énigme est divisée en deux parties</strong>, chacune permettant de trouver un <strong>code</strong> :</p>
-    <ul>
-        <li>la <strong>première partie</strong> est fournie au format PDF (peut être imprimée pour diffusion)</li>
-        <li>la <strong>seconde partie</strong> est débloquée grâce au code de la première partie, et s'affiche directement sur la plateforme</li>
-    </ul>
-    <p>Pour pimenter un peu les choses, les équipes ne peuvent proposer qu'une seule réponse pour la seconde partie et la plateforme ne leur indiquera pas si cette réponse est correcte ou non. Cela permet en outre de garder les bonnes réponses secrètes et préserver l'équité dans d'éventuels concours organisés.</p>
-    
-    <p>Voici les différentes énigmes qui peuvent être proposées à vos élèves :</p>
-    
-      
-    {% for enigme in enigmes %}
-        <article class="grid">
-            <a href="{% url 'apercu_enigme' enigme.id %}">
-                Énigme {{ enigme.id }} - {{ enigme.titre }} 
-            </a>
-        </article>
-    {% endfor %}
+        <p><strong>Chaque énigme est divisée en deux parties</strong>, chacune permettant de trouver un <strong>code</strong> :</p>
+        <ul>
+            <li>la <strong>première partie</strong> est fournie au format PDF (peut être imprimée pour diffusion)</li>
+            <li>la <strong>seconde partie</strong> est débloquée grâce au code de la première partie, et s'affiche directement sur la plateforme</li>
+        </ul>
+        <p>Pour pimenter un peu les choses, les équipes ne peuvent proposer qu'une seule réponse pour la seconde partie et la plateforme ne leur indiquera pas si cette réponse est correcte ou non. Cela permet en outre de garder les bonnes réponses secrètes et préserver l'équité dans d'éventuels concours organisés.</p>
+        
+        <p>Voici les différentes énigmes qui peuvent être proposées à vos élèves :</p>
+        
+          
+        {% for enigme in enigmes %}
+            <article class="grid">
+                <a href="{% url 'apercu_enigme' enigme.id %}">
+                    Énigme {{ enigme.id }} - {{ enigme.titre }} 
+                </a>
+            </article>
+        {% endfor %}
+    </section>
     
     <hr>
+    
     <section>
         <h3>Ressources</h3>
         <h4>Premières parties en PDF</h4>
         <p>Si vous souhaitez récupérer toutes les premières parties d'énigmes en PDF, pour pouvoir les imprimer, il suffit de cliquer sur ce lien : <a href="{% url 'telecharger_ressources' %}" class="button">Télécharger les énigmes</a>.</p>
         <p><strong>Merci de ne pas diffuser ces énigmes sur le Web, pour conserver l'intérêt du concours.</strong></p>
+    </section>
+
+    <hr>
+    <section>
+        <h3>Réponses aux énigmes</h3>
+        <p><span style="font-size:1.5rem">⚠️</span> <strong>Ne pas montrer aux élèves !</strong></p>
+        <details>
+            <summary role="button" class="outline">Afficher les réponses</summary>
+            <p>Survolez les éléments pour voir les codes réponses attendus.</p>
+            <div class="overflow-auto">
+                <table class="striped">
+                    <thead>
+                        <tr>
+                            <th>Énigme</th>
+                            <th>Code première partie</th>
+                            <th>Code seconde partie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enigme in enigmes %}
+                        <tr>
+                            <td>{{ enigme.id }} - {{ enigme.titre }}</td>
+                            <td>
+                                <span data-tooltip="{{ enigme.code_partie1 }}">••••</span>
+                            </td>
+                            <td>
+                                <span data-tooltip="{{ enigme.code_partie2 }}">••••</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> 
+        </details>
+
+        <p>Si vous souhaitez récupérer un document PDF contenant toutes les corrections des énigmes, il suffit de cliquer sur ce lien : <a href="{% url 'telecharger_reponses_enigmes' %}" download target="_blank" class="button">Télécharger les corrections</a>.</p>
+        <p><strong>Merci de ne pas diffuser ces corrections sur le Web, pour conserver l'intérêt du concours.</strong></p>
+
     </section>
 </div>
 
