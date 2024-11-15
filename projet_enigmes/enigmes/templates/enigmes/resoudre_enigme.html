@@ -132,8 +132,8 @@ p.legende {
         display: grid;
         grid-template-columns: 11rem 1fr; /* Suppression de la colonne de droite */
         grid-template-areas:
-        "menu header"
-        "menu body"; /* Suppression de la zone info-equipe */
+            "menu header"
+            "menu body"; /* Suppression de la zone info-equipe */
         column-gap: 3rem;
     }
 }
@@ -163,7 +163,7 @@ aside#menu-enigmes {
 	top: calc(var(--pico-main-top-offset) + var(--pico-block-spacing-vertical) * 2);
 	align-self: start;
 	height: 100vh;
-	overflow-y: auto;
+	/* overflow-y: auto; */
 	--pico-font-size: 16px;
 	font-size: var(--pico-font-size);
 	background-color: var(--pico-background-color);
@@ -190,8 +190,8 @@ aside#info-equipe {
         grid-template-rows: auto 1fr;
         grid-template-columns: 10.5rem 1fr 10.5rem;
         grid-template-areas:
-        "menu header info-equipe"
-        "menu body info-equipe";
+            "menu header info-equipe"
+            "menu body info-equipe";
         column-gap: 3rem;
     }
 
@@ -200,7 +200,7 @@ aside#info-equipe {
         position: sticky;
         align-self: start; /* Assure que le menu commence en haut */
         height: 100vh; /* Pour qu'il prenne toute la hauteur de l'écran */
-        overflow-y: auto; /* Ajoute un défilement si le menu est trop long */
+        /* overflow-y: auto; */
         --pico-font-size: 16px;
         font-size: var(--pico-font-size);
 

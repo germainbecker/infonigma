@@ -348,10 +348,10 @@ def creer_ou_reprendre_equipe(request, code_classe):
     if 'equipe_id' in request.session:
         return redirect('liste_enigmes_classe')
     
-    classe = Classe.objects.get(code=code_classe)
+    classe = get_object_or_404(Classe, code=code_classe)
 
     if request.method == "POST":
-        form = FormulaireEquipe(request.POST)
+        form = FormulaireEquipe(request.POST, classe=classe)
         if form.is_valid():
             code_equipe = form.cleaned_data['code_equipe']
             nom = form.cleaned_data['nom']
@@ -382,7 +382,7 @@ def creer_ou_reprendre_equipe(request, code_classe):
                 request.session['equipe_id'] = equipe.id
                 return render(request, 'enigmes/equipe_creee.html', {'equipe': equipe, 'code_equipe': code_equipe})
     else:
-        form = FormulaireEquipe()
+        form = FormulaireEquipe(classe=classe)
 
     return render(request, 'enigmes/creer_ou_reprendre_equipe.html', {'form': form, 'classe': classe})
 

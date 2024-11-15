@@ -47,6 +47,11 @@ class FormulaireEquipe(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': "Saisisez le code d'équipe unique attribué"})
         )
     
+    def __init__(self, *args, classe=None, **kwargs):
+        # on passe la classe au formulaire pour la validation (méthode clean)
+        self.classe = classe
+        super().__init__(*args, **kwargs)
+    
     def clean(self):
         cleaned_data = super().clean()
         nom = cleaned_data.get('nom')
@@ -55,12 +60,29 @@ class FormulaireEquipe(forms.Form):
         if not nom and not code_equipe:
             raise forms.ValidationError("Vous devez soit créer une équipe (en saisissant un nom) soit saisir un code d'équipe pour reprendre.")
         
-        # Vérifier si le nom d'équipe existe déjà
-        if nom:
-            if Equipe.objects.filter(nom=nom).exists():
-                raise forms.ValidationError("Une équipe avec ce nom existe déjà. Veuillez en choisir un autre.")
+        # Vérifier si le nom d'équipe existe déjà dans la classe
+        if nom and self.classe:
+            if Equipe.objects.filter(nom=nom, classe=self.classe).exists():
+                raise forms.ValidationError(
+                    "Une équipe avec ce nom existe déjà dans cette classe. Veuillez en choisir un autre."
+                )
             
         return cleaned_data
+    
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     nom = cleaned_data.get('nom')
+    #     code_equipe = cleaned_data.get('code_equipe')
+        
+    #     if not nom and not code_equipe:
+    #         raise forms.ValidationError("Vous devez soit créer une équipe (en saisissant un nom) soit saisir un code d'équipe pour reprendre.")
+        
+    #     # Vérifier si le nom d'équipe existe déjà
+    #     if nom:
+    #         if Equipe.objects.filter(nom=nom).exists():
+    #             raise forms.ValidationError("Une équipe avec ce nom existe déjà. Veuillez en choisir un autre.")
+            
+    #     return cleaned_data
     
 class FormulaireRepriseEquipe(forms.Form):
     code_equipe = forms.CharField(

@@ -71,10 +71,13 @@ class Classe(models.Model):
         return code
 
 class Equipe(models.Model):
-    nom = models.CharField(max_length=100, unique=True)
+    nom = models.CharField(max_length=100)
     classe = models.ForeignKey(Classe, on_delete=models.CASCADE)
     code_equipe = models.CharField(max_length=10, unique=True)
     date_creation = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['nom', 'classe']  # Contrainte d'unicité sur le couple (nom, classe)
 
     def __str__(self):
         return f"{self.nom} - {self.classe.nom}"
