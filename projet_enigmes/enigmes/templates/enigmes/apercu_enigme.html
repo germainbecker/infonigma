@@ -520,8 +520,7 @@
         <ul>
             {% for e in enigmes %}
             <li>
-                <a class="secondary" href="{% url 'apercu_enigme' e.id %}" {% if e==enigme %} aria-current="page" {%
-                    endif %}">Énigme {{ forloop.counter }} - {{ e.titre }}</a>
+                <a class="secondary" href="{% url 'apercu_enigme' e.id %}" {% if e == enigme %} aria-current="page" {% endif %}">Énigme {{ forloop.counter }} - {{ e.titre }}</a>
             </li>
             {% endfor %}
         </ul>
@@ -551,7 +550,6 @@
                 <p class="flex gap-1">
                     <i data-feather="external-link" style="color:var(--pico-primary-background)"></i>
                     <span>
-                        <!-- <a class="secondary" href="{% static enigme.partie1_pdf_path %}" target="_blank">Première partie de l'énigme</a> -->
                         <a class="secondary"
                             href="{% url 'pdf_protege' enigme_id=enigme.id nom_fichier=enigme.nom_fichier_partie1_pdf %}"
                             target="_blank">Première partie de l'énigme</a>
@@ -562,7 +560,6 @@
                     <i data-feather="paperclip" style="color:var(--pico-primary-background)"></i>
                     <span>
                         {{ enigme.titre_complement }} :
-                        <!-- <a class="secondary" href="{% static enigme.chemin_pdf_complementaire %}" target="_blank">cliquer ici</a> -->
                         <a class="secondary"
                             href="{% url 'pdf_protege' enigme_id=enigme.id nom_fichier=enigme.nom_fichier_pdf_complementaire %}"
                             target="_blank">cliquer ici</a>

@@ -129,9 +129,7 @@
                 <a class="no-decoration" data-tooltip="Résultats" href="{% url 'reponses_classe' classe.code %}">
                     <i data-feather="bar-chart-2"></i>
                 </a>
-                <a class="no-decoration {% if not peut_modifier_classe|get_item:classe.id %}icon-disabled{% endif %}" {%
-                    if not peut_modifier_classe|get_item:classe.id
-                    %}data-tooltip="Modification impossible car des équipes sont déjà créées" {% else %}
+                <a class="no-decoration {% if not peut_modifier_classe|get_item:classe.id %}icon-disabled{% endif %}" {% if not peut_modifier_classe|get_item:classe.id %}data-tooltip="Modification impossible car des équipes sont déjà créées" {% else %}
                     data-tooltip="Modifier" href="{% url 'modifier_classe' classe.code %}" {% endif %}>
                     <i data-feather="edit"></i>
                 </a>

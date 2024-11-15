@@ -531,11 +531,16 @@ def resoudre_enigme(request, enigme_id):
                     # Retourner le fragment HTML pour la partie 2
                     form2 = FormulairePartie2()
                     enigme_partie2_markdown = render_markdown_file(enigme.partie2_markdown_path)
-                    html = render_to_string('enigmes/partials/partie2.html', {
-                        'form2': form2,
-                        'enigme': enigme,
-                        'enigme_partie2_markdown': enigme_partie2_markdown
-                    })
+                    # On passe request=request à render_to_string pour inclure le contexte nécessaire pour le CSRF
+                    html = render_to_string(
+                        'enigmes/partials/partie2.html', 
+                        {
+                            'form2': form2,
+                            'enigme': enigme,
+                            'enigme_partie2_markdown': enigme_partie2_markdown
+                        }, 
+                        request=request
+                    )
                     # Renvoyer la réponse avec l'attribut HX-Reswap
                     response = HttpResponse(html)
                     response['HX-Reswap'] = 'outerHTML'
@@ -547,13 +552,15 @@ def resoudre_enigme(request, enigme_id):
                     progression.date_reponse_partie1 = timezone.now()
                     progression.save()
                     # Retourner un fragment d'erreur si le code est incorrect
+                    # On passe request=request à render_to_string pour inclure le contexte nécessaire pour le CSRF
                     message_erreur = render_to_string('enigmes/partials/error.html', {
                         'error': "Le code est incorrect."
-                    })
+                    }, request=request)
                     return HttpResponse(message_erreur)
         
         elif 'code_partie2' in request.POST:
             form2 = FormulairePartie2(request.POST)
+            print("la")
             if form2.is_valid():
                 code_partie2 = form2.cleaned_data['code_partie2']
                 # Enregistrer la réponse à la partie 2 et la date
@@ -564,8 +571,13 @@ def resoudre_enigme(request, enigme_id):
                 if comparer_chaines(enigme.code_partie2, code_partie2):
                     progression.partie2_resolue = True
                 progression.save()
+                print("ici")
                 messages.info(request, "Votre réponse a bien été transmise. Vous pouvez poursuivre avec une nouvelle énigme.")
-                return redirect('liste_enigmes_classe')
+                # Création de la réponse avec le bon header pour htmx (assure la redirection)
+                redirect_url = reverse('liste_enigmes_classe')
+                response = HttpResponse(status=200)
+                response.headers['HX-Redirect'] = redirect_url
+                return response
 
     else:  # requête GET
         # Si la partie 1 est déjà résolue, afficher le formulaire pour la partie 2

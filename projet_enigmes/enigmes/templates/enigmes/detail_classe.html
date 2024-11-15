@@ -88,11 +88,8 @@
         <a class="no-decoration" href="{% url 'reponses_classe' code_classe=classe.code %}">
             <button class="outline">Résultats</button>
         </a>
-        <a class="no-decoration" {% if not peut_modifier %}
-            data-tooltip="Modification impossible car des équipes sont déjà créées" data-placement="bottom" {% else
-            %}href="{% url 'modifier_classe' code_classe=classe.code %}" {% endif%}>
-            <button class="outline {% if not peut_modifier %}disabled{% endif %}" {% if not peut_modifier %}disabled{%
-                endif%}>Modifier</button>
+        <a class="no-decoration" {% if not peut_modifier %} data-tooltip="Modification impossible car des équipes sont déjà créées" data-placement="bottom" {% else %}href="{% url 'modifier_classe' code_classe=classe.code %}" {% endif %}>
+            <button class="outline {% if not peut_modifier %}disabled{% endif %}" {% if not peut_modifier %}disabled{% endif %}>Modifier</button>
         </a>
         <a class="no-decoration" href="{% url 'supprimer_classe' code_classe=classe.code %}">
             <button class="outline">Supprimer</button>

@@ -14,7 +14,7 @@
 </section>
 
 <article class="centre" style="max-width: 600px;">
-    <form method="post" hx-post="{ url 'resoudre_enigme' enigme.id}">
+    <form method="post" hx-post="{% url 'resoudre_enigme' enigme.id %}">
         {% csrf_token %}
         <div class="form-group">
             <h4 style="text-align: center;">Code de la seconde partie</h4>
