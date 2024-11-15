@@ -560,7 +560,6 @@ def resoudre_enigme(request, enigme_id):
         
         elif 'code_partie2' in request.POST:
             form2 = FormulairePartie2(request.POST)
-            print("la")
             if form2.is_valid():
                 code_partie2 = form2.cleaned_data['code_partie2']
                 # Enregistrer la réponse à la partie 2 et la date
@@ -571,12 +570,10 @@ def resoudre_enigme(request, enigme_id):
                 if comparer_chaines(enigme.code_partie2, code_partie2):
                     progression.partie2_resolue = True
                 progression.save()
-                print("ici")
                 messages.info(request, "Votre réponse a bien été transmise. Vous pouvez poursuivre avec une nouvelle énigme.")
-                # Création de la réponse avec le bon header pour htmx (assure la redirection)
-                redirect_url = reverse('liste_enigmes_classe')
-                response = HttpResponse(status=200)
-                response.headers['HX-Redirect'] = redirect_url
+                # On redirige avec HX-Redirect car requête HTMX
+                response = HttpResponse()
+                response['HX-Redirect'] = reverse('liste_enigmes_classe')
                 return response
 
     else:  # requête GET
