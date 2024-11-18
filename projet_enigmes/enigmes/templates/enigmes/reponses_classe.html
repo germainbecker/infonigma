@@ -37,14 +37,14 @@
     }
 
     tbody tr td:first-child {
-        max-width: 100px;
+        /* max-width: 100px; */
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
     }
 
     tbody tr td:not(:first-child) {
-        max-width: 100px;
+        /* max-width: 100px; */
         overflow-x: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -219,7 +219,8 @@
 
                         <!-- Partie 1 -->
                         <td class="reponse-cell {% if reponse.partie1.code %}{% if reponse.partie1.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}">
+                            <!-- <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}"> -->
+                            <span class="code-reponse">
                                 {{ reponse.partie1.code|default:"-" }}
                             </span>
                             {% if reponse.partie1.code %}
@@ -233,7 +234,8 @@
                         <!-- Partie 2 -->
                         <td
                             class="reponse-cell {% if reponse.partie2.code %}{% if reponse.partie2.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                            <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}">
+                            <!-- <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}"> -->
+                            <span class="code-reponse">
                                 {{ reponse.partie2.code|default:"-" }}</span>
                             {% if reponse.partie2.code %}
                             <span class="placeholder-reponse">••••</span>
@@ -279,7 +281,8 @@
                             <!-- Partie 1 -->
                             <td
                                 class="reponse-cell {% if reponse.partie1.code %}{% if reponse.partie1.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                                <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}">
+                                <!-- <span class="code-reponse" data-tooltip="{{ reponse.partie1.code }}"> -->
+                                <span class="code-reponse">
                                     {{ reponse.partie1.code|default_if_none:"-" }}
                                 </span>
                                 {% if reponse.partie1.code %}
@@ -291,7 +294,8 @@
                             <!-- Partie 2 -->
                             <td
                                 class="reponse-cell {% if reponse.partie2.code %}{% if reponse.partie2.est_correcte %}reponse-correcte{% else %}reponse-incorrecte{% endif %}{% endif %}">
-                                <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}">
+                                <!-- <span class="code-reponse" data-tooltip="{{ reponse.partie2.code }}"> -->
+                                <span class="code-reponse">
                                     {{ reponse.partie2.code|default_if_none:"-" }}
                                 </span>
                                 {% if reponse.partie2.code %}
@@ -367,8 +371,11 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>
-                        <span class="code-reponse" data-tooltip="{{ resultat.equipe.nom }}">
-                            {{ resultat.equipe.nom }}</span></td>
+                        <!-- <span class="code-reponse" data-tooltip="{{ resultat.equipe.nom }}"> -->
+                        <span class="code-reponse">
+                            {{ resultat.equipe.nom }}
+                        </span>
+                    </td>
                     <td><strong>{{ resultat.score_total }}</strong></td>
                     <td>{{ resultat.nb_partie2_resolue }}</td>
                     <td>{{ resultat.temps_formate_derniere_reponse|default_if_none:"-" }}</td>
