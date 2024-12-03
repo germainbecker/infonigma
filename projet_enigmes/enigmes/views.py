@@ -258,7 +258,7 @@ class ClasseDeleteView(LoginRequiredMixin, DeleteView):
 
 @login_required
 def liste_classes(request):
-    classes = Classe.objects.filter(enseignant=request.user)
+    classes = Classe.objects.filter(enseignant=request.user).order_by('-pk')
     peut_modifier_classe = {classe.id : not classe.equipe_set.exists() for classe in classes}
     return render(request, 'enigmes/mes_classes.html', {'classes': classes, 'peut_modifier_classe': peut_modifier_classe})
 

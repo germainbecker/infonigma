@@ -65,9 +65,11 @@ class Classe(models.Model):
         super().save(*args, **kwargs)
 
     def generer_code_unique(self):
-        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+        # certains caractères qui peuvent être confondus sont exclus
+        caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+        code = ''.join(random.choices(caracteres, k=8))
         while Classe.objects.filter(code=code).exists():
-            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+            code = ''.join(random.choices(caracteres, k=8))
         return code
 
 class Equipe(models.Model):
@@ -93,10 +95,12 @@ class Equipe(models.Model):
 
     def generer_code_unique(self):
         """Générer un code unique de 10 caractères"""
-        characters = string.ascii_letters + string.digits
+        # caracteres = string.ascii_letters + string.digits
+        # on retire les caractères qui peuvent être confondus
+        caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789"
         while True:
             # Générer un code aléatoire de 10 caractères
-            code = ''.join(random.choices(characters, k=10))
+            code = ''.join(random.choices(caracteres, k=10))
             # Vérifier que le code est unique
             if not Equipe.objects.filter(code_equipe=code).exists():
                 return code
