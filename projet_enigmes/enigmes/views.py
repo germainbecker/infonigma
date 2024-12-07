@@ -498,14 +498,12 @@ def resoudre_enigme(request, enigme_id):
     
     enigme = get_object_or_404(Enigme, id=enigme_id)
     enigmes = equipe.classe.enigmes.all()
-    numero_enigme_en_cours = list(enigmes).index(enigme) + 1
     progression, created = ProgressionEquipe.objects.get_or_create(equipe=equipe, enigme=enigme)
     # Vérifier si une réponse a déjà été soumise pour la partie 2
     if progression.partie2_resolue or (progression.date_reponse_partie2 is not None):
         enigme_partie2_markdown = render_markdown_file(enigme.partie2_markdown_path)
         return render(request, 'enigmes/resoudre_enigme.html', {
             'enigme': enigme,
-            'numero_enigme_en_cours': numero_enigme_en_cours,
             'equipe': equipe,
             'enigmes': enigmes,
             'partie1_resolue': True,
@@ -583,7 +581,6 @@ def resoudre_enigme(request, enigme_id):
             enigme_partie2_markdown = render_markdown_file(enigme.partie2_markdown_path)
             return render(request, 'enigmes/resoudre_enigme.html', {
                 'enigme': enigme,
-                'numero_enigme_en_cours': numero_enigme_en_cours,
                 'enigmes': enigmes,
                 'form2': form2, 
                 'equipe': equipe, 
@@ -596,7 +593,6 @@ def resoudre_enigme(request, enigme_id):
 
             return render(request, 'enigmes/resoudre_enigme.html', {
                 'enigme': enigme,
-                'numero_enigme_en_cours': numero_enigme_en_cours,
                 'enigmes': enigmes,
                 'form1': form1, 
                 'equipe': equipe

@@ -79,7 +79,7 @@
     <article class="grid">
         <div>
             <a {% if classe_est_active %}href="{% url 'resoudre_enigme' enigme.id %}" {% endif %}>
-                Énigme {{ forloop.counter }} - {{ enigme.titre }}
+                Énigme {{ enigme.id }} - {{ enigme.titre }}
             </a>
         </div>
 

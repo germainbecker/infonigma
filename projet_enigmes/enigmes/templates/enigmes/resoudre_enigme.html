@@ -132,7 +132,6 @@ p.legende {
         display: grid;
         grid-template-columns: 11rem 1fr; /* Suppression de la colonne de droite */
         grid-template-areas:
-            "menu header"
             "menu body"; /* Suppression de la zone info-equipe */
         column-gap: 3rem;
     }
@@ -147,8 +146,8 @@ p.legende {
 
 @media (max-width: 1024px) {
     body > header.is-fixed-above-lg {
-	top:inherit;
-}
+        top:inherit;
+    }
 }
 
 
@@ -180,9 +179,9 @@ aside#info-equipe {
         font-size: var(--pico-font-size);
     }
 
-    div#content {
-        grid-area: body; /* La zone pour le contenu principal */
-    }
+div#content {
+    grid-area: body; /* La zone pour le contenu principal */
+}
 
 @media (min-width: 1280px) {
     body>main:has(aside#menu-enigmes) {
@@ -190,7 +189,6 @@ aside#info-equipe {
         grid-template-rows: auto 1fr;
         grid-template-columns: 10.5rem 1fr 10.5rem;
         grid-template-areas:
-            "menu header info-equipe"
             "menu body info-equipe";
         column-gap: 3rem;
     }
@@ -479,7 +477,7 @@ div#content blockquote {
             </a>
         </li>
         <li>
-            Énigme {{ numero_enigme_en_cours }} -<span class="titre-enigme"> {{ enigme.titre }}</span>
+            Énigme {{ enigme.id }} -<span class="titre-enigme"> {{ enigme.titre }}</span>
         </li>
 
     </ul>
@@ -497,7 +495,7 @@ div#content blockquote {
         <ul>
             {% for e in enigmes %}
             <li>
-                <a class="secondary" href="{% url 'resoudre_enigme' e.id %}" {% if e == enigme %} aria-current="page" {% endif %}">Énigme {{ forloop.counter }} - {{ e.titre }}</a>
+                <a class="secondary" href="{% url 'resoudre_enigme' e.id %}" {% if e == enigme %} aria-current="page" {% endif %}">Énigme {{ e.id }} - {{ e.titre }}</a>
             </li>
             {% endfor %}
         </ul>
