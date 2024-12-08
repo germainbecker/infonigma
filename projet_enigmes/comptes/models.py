@@ -1,13 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.crypto import get_random_string
+from django.core.exceptions import ValidationError
 
 class EnseignantManager(BaseUserManager):
     def create_user(self, email, password=None, nom=None, prenom=None):
         if not email:
             raise ValueError('Les enseignants doivent avoir une adresse email')
+
+        email = self.normalize_email(email).lower()  # normalisation de l'email
+
+        # Vérifier si un utilisateur avec cet email (insensible à la casse) existe déjà
+        if self.model.objects.filter(email__iexact=email).exists():
+            raise ValidationError('Un utilisateur avec cet email existe déjà')
+
         user = self.model(
-            email=self.normalize_email(email),
+            email=email,
             nom=nom,
             prenom=prenom
         )
@@ -38,6 +46,12 @@ class Enseignant(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    def save(self, *args, **kwargs):
+        # Normalisation de l'email pour toutes les sauvegardes
+        if self.email:
+            self.email = self.email.lower()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email

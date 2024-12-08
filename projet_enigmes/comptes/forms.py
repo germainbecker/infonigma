@@ -76,9 +76,12 @@ class FormulaireInscriptionEnseignant(UserCreationForm):
         }
 
     def clean_email(self):
-        email = self.cleaned_data['email']
+        email = self.cleaned_data['email'].strip().lower()  # Normalisation
         if not adresse_email_valide(email):
             raise forms.ValidationError("Veuillez utiliser une adresse email académique.")
+        # Vérification d'unicité insensible à la casse
+        if Enseignant.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("Cette adresse email est déjà utilisée.")
         return email
 
 class FormulaireConnexionEnseignant(AuthenticationForm):
@@ -97,6 +100,11 @@ class FormulaireConnexionEnseignant(AuthenticationForm):
             "qui vous a été envoyé par email."
         ),
     }
+
+    def clean_username(self):
+        # Convertir l'email en minuscules lors de l'authentification
+        username = self.cleaned_data.get('username')
+        return username.lower() if username else username
 
 class EmailForm(forms.Form):
     sujet = forms.CharField(label='Sujet', max_length=100)
